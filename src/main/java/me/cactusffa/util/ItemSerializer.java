@@ -3,8 +3,10 @@ package me.cactusffa.util;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -26,6 +28,18 @@ public final class ItemSerializer {
             return toItems(object);
         } catch (IOException | ClassNotFoundException exception) {
             return new ItemStack[0];
+        }
+    }
+
+    public static String encodeItems(ItemStack[] items) {
+        ItemStack[] source = items == null ? new ItemStack[0] : items;
+        try (ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+             BukkitObjectOutputStream output = new BukkitObjectOutputStream(byteStream)) {
+            output.writeObject(source);
+            output.flush();
+            return Base64.getEncoder().encodeToString(byteStream.toByteArray());
+        } catch (IOException exception) {
+            return "";
         }
     }
 

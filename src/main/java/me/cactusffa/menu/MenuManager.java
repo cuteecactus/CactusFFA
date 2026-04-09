@@ -44,6 +44,9 @@ public final class MenuManager {
         for (KitCategory category : plugin.kits().categories()) {
             inventory.setItem(category.slot(), new ItemBuilder(category.icon()).name(category.displayName()).lore(category.lore()).hideFlags().build());
         }
+        for (KitDefinition kit : plugin.kits().uncategorizedKits()) {
+            inventory.setItem(kit.slot(), kitItem(kit));
+        }
         inventory.setItem(section.getInt("close-slot", 26), closeItem());
         contexts.put(player.getUniqueId(), MenuContext.root());
         player.openInventory(inventory);
@@ -76,9 +79,9 @@ public final class MenuManager {
         Inventory inventory = plugin.getServer().createInventory(player, section.getInt("size", 27), ColorUtil.component(section.getString("title", "&0CactusFFA Admin")));
         fill(section, inventory);
         inventory.setItem(section.getInt("reload-slot", 10), new ItemBuilder(Material.BOOK).name("&aReload").lore(List.of("&7Reload all configs and menus.")).build());
-        inventory.setItem(section.getInt("create-arena-slot", 12), new ItemBuilder(Material.LIME_WOOL).name("&aCreate Arena").lore(List.of("&7Use /cacffa arena create <id>", "&7while standing in the arena world.")).build());
-        inventory.setItem(section.getInt("set-arena-slot", 13), new ItemBuilder(Material.COMPASS).name("&eSet Arena Spawn").lore(List.of("&7Use /cacffa arena setspawn <id>", "&7to update the selected arena.")).build());
-        inventory.setItem(section.getInt("teleport-arena-slot", 14), new ItemBuilder(Material.ENDER_PEARL).name("&bTeleport Arena").lore(List.of("&7Use /cacffa arena tp <id>", "&7to preview an arena.")).build());
+        inventory.setItem(section.getInt("create-arena-slot", 12), new ItemBuilder(Material.LIME_WOOL).name("&aCreate Arena").lore(List.of("&7Use /cactusffa arena create <id>", "&7while standing in the arena world.")).build());
+        inventory.setItem(section.getInt("set-arena-slot", 13), new ItemBuilder(Material.COMPASS).name("&eSet Arena Spawn").lore(List.of("&7Use /cactusffa arena setspawn <id>", "&7to update the selected arena.")).build());
+        inventory.setItem(section.getInt("teleport-arena-slot", 14), new ItemBuilder(Material.ENDER_PEARL).name("&bTeleport Arena").lore(List.of("&7Use /cactusffa arena tp <id>", "&7to preview an arena.")).build());
         inventory.setItem(section.getInt("world-info-slot", 16), new ItemBuilder(Material.GRASS_BLOCK).name("&fArena World").lore(List.of("&7World: &a" + plugin.worlds().arenaWorldName(), "&7Void generation is configurable.")).build());
         contexts.put(player.getUniqueId(), MenuContext.admin());
         player.openInventory(inventory);
@@ -99,6 +102,12 @@ public final class MenuManager {
                 for (KitCategory category : plugin.kits().categories()) {
                     if (category.slot() == slot) {
                         openCategory(player, category);
+                        return;
+                    }
+                }
+                for (KitDefinition kit : plugin.kits().uncategorizedKits()) {
+                    if (kit.slot() == slot) {
+                        plugin.getServer().dispatchCommand(player, "ffa " + kit.id());
                         return;
                     }
                 }

@@ -118,7 +118,7 @@ public final class CactusFFAPlugin extends JavaPlugin {
     private void registerCommands() {
         register("ffa", new FfaCommand(this));
         register("leave", new LeaveCommand(this));
-        register("cacffa", new AdminCommand(this));
+        register("cactusffa", new AdminCommand(this));
     }
 
     private void registerListeners() {
