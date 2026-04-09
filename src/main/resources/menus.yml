@@ -1,0 +1,31 @@
+menus:
+  root:
+    title: "&0Select FFA Category"
+    size: 27
+    fill:
+      enabled: true
+      material: "BLACK_STAINED_GLASS_PANE"
+      name: " "
+    back-slot: 18
+    close-slot: 26
+  category:
+    title: "&0%category% Kits"
+    size: 27
+    fill:
+      enabled: true
+      material: "GRAY_STAINED_GLASS_PANE"
+      name: " "
+    back-slot: 18
+    close-slot: 26
+  admin:
+    title: "&0CactusFFA Admin"
+    size: 27
+    fill:
+      enabled: true
+      material: "GREEN_STAINED_GLASS_PANE"
+      name: " "
+    reload-slot: 10
+    create-arena-slot: 12
+    set-arena-slot: 13
+    teleport-arena-slot: 14
+    world-info-slot: 16
