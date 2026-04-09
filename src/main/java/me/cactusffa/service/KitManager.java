@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,15 +25,17 @@ import java.util.stream.Collectors;
 public final class KitManager {
 
     private final CactusFFAPlugin plugin;
+    private final File file;
     private final Map<String, KitCategory> categories = new LinkedHashMap<>();
     private final Map<String, KitDefinition> kits = new LinkedHashMap<>();
 
     public KitManager(CactusFFAPlugin plugin) {
         this.plugin = plugin;
+        this.file = new File(plugin.getDataFolder(), "kits.yml");
     }
 
     public void reload() {
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "kits.yml"));
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         categories.clear();
         kits.clear();
 
@@ -117,6 +120,131 @@ public final class KitManager {
 
     public Collection<KitDefinition> kits() {
         return Collections.unmodifiableCollection(kits.values());
+    }
+
+    public List<KitDefinition> uncategorizedKits() {
+        List<KitDefinition> list = new ArrayList<>();
+        for (KitDefinition definition : kits.values()) {
+            if (definition.categoryId().isBlank()) {
+                list.add(definition);
+            }
+        }
+        list.sort(Comparator.comparingInt(KitDefinition::slot));
+        return list;
+    }
+
+    public boolean createCategory(String id) {
+        String normalizedId = normalizeId(id);
+        if (normalizedId.isBlank() || categories.containsKey(normalizedId)) {
+            return false;
+        }
+
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        String path = "categories." + normalizedId;
+        config.set(path + ".display-name", prettify(normalizedId));
+        config.set(path + ".icon", Material.CHEST.name());
+        config.set(path + ".slot", nextCategorySlot());
+        config.set(path + ".lore", List.of("&7Custom kit category."));
+        return save(config);
+    }
+
+    public boolean createKit(String id, String arenaId, String categoryId, Material icon) {
+        String normalizedId = normalizeId(id);
+        String normalizedArenaId = normalizeId(arenaId);
+        String normalizedCategoryId = normalizeOptionalId(categoryId);
+        if (normalizedId.isBlank() || normalizedArenaId.isBlank() || kits.containsKey(normalizedId)) {
+            return false;
+        }
+        if (!normalizedCategoryId.isBlank() && !categories.containsKey(normalizedCategoryId)) {
+            return false;
+        }
+
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        String path = "kits." + normalizedId;
+        config.set(path + ".display-name", prettify(normalizedId));
+        config.set(path + ".category", normalizedCategoryId);
+        config.set(path + ".icon", (icon == null ? Material.CHEST : icon).name());
+        config.set(path + ".slot", nextKitSlot(normalizedCategoryId));
+        config.set(path + ".arena", normalizedArenaId);
+        config.set(path + ".permission", "");
+        config.set(path + ".lore", List.of("&7Custom FFA kit."));
+        config.set(path + ".inventory-base64", "");
+        config.set(path + ".armor-base64", "");
+        config.set(path + ".extra-base64", "");
+        return save(config);
+    }
+
+    public boolean setKitInventory(String id, ItemStack[] contents, ItemStack[] armor, ItemStack[] extra) {
+        String normalizedId = normalizeId(id);
+        if (!kits.containsKey(normalizedId)) {
+            return false;
+        }
+
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        String path = "kits." + normalizedId;
+        if (!config.contains(path)) {
+            return false;
+        }
+        config.set(path + ".inventory-base64", ItemSerializer.encodeItems(contents));
+        config.set(path + ".armor-base64", ItemSerializer.encodeItems(armor));
+        config.set(path + ".extra-base64", ItemSerializer.encodeItems(extra));
+        return save(config);
+    }
+
+    public String normalizeId(String raw) {
+        if (raw == null) {
+            return "";
+        }
+        return raw.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
+    }
+
+    public String normalizeOptionalId(String raw) {
+        String normalized = normalizeId(raw);
+        if (normalized.equals("none") || normalized.equals("null") || normalized.equals("-")) {
+            return "";
+        }
+        return normalized;
+    }
+
+    public String prettify(String id) {
+        if (id == null || id.isBlank()) {
+            return "";
+        }
+        String[] parts = id.replace('-', '_').split("_");
+        List<String> words = new ArrayList<>();
+        for (String part : parts) {
+            if (part.isBlank()) {
+                continue;
+            }
+            words.add(part.substring(0, 1).toUpperCase(Locale.ROOT) + part.substring(1));
+        }
+        return String.join(" ", words);
+    }
+
+    private int nextCategorySlot() {
+        return categories.values().stream()
+                .mapToInt(KitCategory::slot)
+                .max()
+                .orElse(9) + 1;
+    }
+
+    private int nextKitSlot(String categoryId) {
+        return kits.values().stream()
+                .filter(kit -> kit.categoryId().equalsIgnoreCase(categoryId))
+                .mapToInt(KitDefinition::slot)
+                .max()
+                .orElse(9) + 1;
+    }
+
+    private boolean save(YamlConfiguration config) {
+        try {
+            config.save(file);
+            reload();
+            return true;
+        } catch (IOException exception) {
+            plugin.getLogger().warning("Failed to save kits.yml: " + exception.getMessage());
+            return false;
+        }
     }
 
     private Material material(String raw) {

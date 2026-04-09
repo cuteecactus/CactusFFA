@@ -2,6 +2,9 @@ package me.cactusffa.command;
 
 import me.cactusffa.CactusFFAPlugin;
 import me.cactusffa.model.Arena;
+import me.cactusffa.model.KitCategory;
+import me.cactusffa.model.KitDefinition;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -43,17 +46,23 @@ public final class AdminCommand implements CommandExecutor, TabCompleter {
         if (args[0].equalsIgnoreCase("arena")) {
             return handleArena(player, args);
         }
-        plugin.messages().send(player, "invalid-usage", Map.of("usage", "/cacffa [reload|arena]"));
+        if (args[0].equalsIgnoreCase("kitcategory")) {
+            return handleKitCategory(player, args);
+        }
+        if (args[0].equalsIgnoreCase("kit")) {
+            return handleKit(player, args);
+        }
+        plugin.messages().send(player, "invalid-usage", Map.of("usage", "/cactusffa [reload|arena|kitcategory|kit]"));
         return true;
     }
 
     private boolean handleArena(Player player, String[] args) {
         if (args.length < 3) {
-            plugin.messages().send(player, "invalid-usage", Map.of("usage", "/cacffa arena <create|setspawn|tp> <id>"));
+            plugin.messages().send(player, "invalid-usage", Map.of("usage", "/cactusffa arena <create|setspawn|tp> <id>"));
             return true;
         }
         String action = args[1].toLowerCase(Locale.ROOT);
-        String id = args[2].toLowerCase(Locale.ROOT);
+        String id = plugin.kits().normalizeId(args[2]);
         if ((action.equals("create") || action.equals("setspawn")) && !plugin.worlds().isArenaWorld(player.getWorld())) {
             plugin.messages().send(player, "must-be-in-world", Map.of("world", plugin.worlds().arenaWorldName()));
             return true;
@@ -80,7 +89,96 @@ public final class AdminCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             default -> {
-                plugin.messages().send(player, "invalid-usage", Map.of("usage", "/cacffa arena <create|setspawn|tp> <id>"));
+                plugin.messages().send(player, "invalid-usage", Map.of("usage", "/cactusffa arena <create|setspawn|tp> <id>"));
+                return true;
+            }
+        }
+    }
+
+    private boolean handleKitCategory(Player player, String[] args) {
+        if (args.length < 3 || !args[1].equalsIgnoreCase("create")) {
+            plugin.messages().send(player, "invalid-usage", Map.of("usage", "/cactusffa kitcategory create <id>"));
+            return true;
+        }
+
+        String id = plugin.kits().normalizeId(args[2]);
+        if (id.isBlank()) {
+            plugin.messages().send(player, "invalid-usage", Map.of("usage", "/cactusffa kitcategory create <id>"));
+            return true;
+        }
+        if (plugin.kits().category(id).isPresent()) {
+            plugin.messages().send(player, "category-exists", Map.of("category", id));
+            return true;
+        }
+        if (!plugin.kits().createCategory(id)) {
+            plugin.messages().send(player, "save-failed");
+            return true;
+        }
+        plugin.messages().send(player, "category-created", Map.of("category", id));
+        return true;
+    }
+
+    private boolean handleKit(Player player, String[] args) {
+        if (args.length < 3) {
+            plugin.messages().send(player, "invalid-usage", Map.of("usage", "/cactusffa kit <create|setinventory> ..."));
+            return true;
+        }
+
+        String action = args[1].toLowerCase(Locale.ROOT);
+        switch (action) {
+            case "create" -> {
+                if (args.length < 4) {
+                    plugin.messages().send(player, "invalid-usage", Map.of("usage", "/cactusffa kit create <id> <arena> [category|none]"));
+                    return true;
+                }
+
+                String id = plugin.kits().normalizeId(args[2]);
+                String arenaId = plugin.kits().normalizeId(args[3]);
+                String categoryId = args.length >= 5 ? plugin.kits().normalizeOptionalId(args[4]) : "";
+
+                if (plugin.kits().kit(id).isPresent()) {
+                    plugin.messages().send(player, "kit-exists", Map.of("kit", id));
+                    return true;
+                }
+                if (plugin.arenas().find(arenaId).isEmpty()) {
+                    plugin.messages().send(player, "arena-missing", Map.of("arena", arenaId));
+                    return true;
+                }
+                if (!categoryId.isBlank() && plugin.kits().category(categoryId).isEmpty()) {
+                    plugin.messages().send(player, "category-missing", Map.of("category", categoryId));
+                    return true;
+                }
+
+                Material icon = player.getInventory().getItemInMainHand().getType().isAir()
+                        ? Material.CHEST
+                        : player.getInventory().getItemInMainHand().getType();
+                if (!plugin.kits().createKit(id, arenaId, categoryId, icon)) {
+                    plugin.messages().send(player, "save-failed");
+                    return true;
+                }
+                plugin.messages().send(player, "kit-created", Map.of("kit", id, "arena", arenaId));
+                return true;
+            }
+            case "setinventory" -> {
+                String id = plugin.kits().normalizeId(args[2]);
+                KitDefinition kit = plugin.kits().kit(id).orElse(null);
+                if (kit == null) {
+                    plugin.messages().send(player, "kit-missing", Map.of("kit", id));
+                    return true;
+                }
+                if (!plugin.kits().setKitInventory(
+                        id,
+                        player.getInventory().getContents(),
+                        player.getInventory().getArmorContents(),
+                        player.getInventory().getExtraContents())) {
+                    plugin.messages().send(player, "save-failed");
+                    return true;
+                }
+                plugin.messages().send(player, "kit-inventory-updated", Map.of("kit", id));
+                return true;
+            }
+            default -> {
+                plugin.messages().send(player, "invalid-usage", Map.of("usage", "/cactusffa kit <create|setinventory> ..."));
                 return true;
             }
         }
@@ -92,13 +190,33 @@ public final class AdminCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1) {
             suggestions.add("reload");
             suggestions.add("arena");
+            suggestions.add("kitcategory");
+            suggestions.add("kit");
         } else if (args.length == 2 && args[0].equalsIgnoreCase("arena")) {
             suggestions.add("create");
             suggestions.add("setspawn");
             suggestions.add("tp");
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("kitcategory")) {
+            suggestions.add("create");
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("kit")) {
+            suggestions.add("create");
+            suggestions.add("setinventory");
         } else if (args.length == 3 && args[0].equalsIgnoreCase("arena") && !args[1].equalsIgnoreCase("create")) {
             for (Arena arena : plugin.arenas().all()) {
                 suggestions.add(arena.id());
+            }
+        } else if (args.length == 3 && args[0].equalsIgnoreCase("kit") && args[1].equalsIgnoreCase("setinventory")) {
+            for (KitDefinition kit : plugin.kits().kits()) {
+                suggestions.add(kit.id());
+            }
+        } else if (args.length == 4 && args[0].equalsIgnoreCase("kit") && args[1].equalsIgnoreCase("create")) {
+            for (Arena arena : plugin.arenas().all()) {
+                suggestions.add(arena.id());
+            }
+        } else if (args.length == 5 && args[0].equalsIgnoreCase("kit") && args[1].equalsIgnoreCase("create")) {
+            suggestions.add("none");
+            for (KitCategory category : plugin.kits().categories()) {
+                suggestions.add(category.id());
             }
         }
         String needle = args[args.length - 1].toLowerCase(Locale.ROOT);

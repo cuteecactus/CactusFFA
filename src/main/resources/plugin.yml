@@ -12,9 +12,10 @@ commands:
   leave:
     description: Leave FFA and restore your state.
     usage: /leave
-  cacffa:
+  cactusffa:
     description: Admin command for CactusFFA.
-    usage: /cacffa
+    usage: /cactusffa
+    aliases: [cffa]
     permission: cactusffa.admin
 
 permissions:
