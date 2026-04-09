@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 
 public final class GuiListener implements Listener {
 
@@ -20,17 +21,38 @@ public final class GuiListener implements Listener {
         if (!(event.getWhoClicked() instanceof Player player)) {
             return;
         }
-        if (!plugin.menus().isManaged(player)) {
+        if (!plugin.menus().isManaged(event.getView().getTopInventory())) {
             return;
         }
         event.setCancelled(true);
-        plugin.menus().handleClick(player, event.getRawSlot());
+        if (event.getClickedInventory() == null || event.getClickedInventory() != event.getView().getTopInventory()) {
+            return;
+        }
+        plugin.menus().handleClick(player, event.getView().getTopInventory(), event.getRawSlot());
+    }
+
+    @EventHandler
+    public void onDrag(InventoryDragEvent event) {
+        if (!plugin.menus().isManaged(event.getView().getTopInventory())) {
+            return;
+        }
+        int topSize = event.getView().getTopInventory().getSize();
+        for (int rawSlot : event.getRawSlots()) {
+            if (rawSlot < topSize) {
+                event.setCancelled(true);
+                return;
+            }
+        }
     }
 
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         if (event.getPlayer() instanceof Player player) {
-            plugin.menus().clear(player);
+            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                if (!plugin.menus().isManaged(player.getOpenInventory().getTopInventory())) {
+                    plugin.menus().clear(player);
+                }
+            });
         }
     }
 }

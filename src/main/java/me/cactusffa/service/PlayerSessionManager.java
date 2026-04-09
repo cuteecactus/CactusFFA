@@ -68,6 +68,24 @@ public final class PlayerSessionManager {
         plugin.scoreboard().apply(player);
     }
 
+    public void rekit(Player player) {
+        get(player).ifPresent(session -> plugin.kits().kit(session.currentKitId()).ifPresent(kit -> {
+            player.getInventory().clear();
+            player.getInventory().setContents(copy(kit.contents()));
+            player.getInventory().setArmorContents(copy(kit.armor()));
+            player.getInventory().setExtraContents(copy(kit.extras()));
+            player.updateInventory();
+            if (plugin.getConfig().getBoolean("ffa.heal-on-join", true)) {
+                double maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH) == null ? 20.0D : player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+                player.setHealth(Math.min(maxHealth, 20.0D));
+            }
+            if (plugin.getConfig().getBoolean("ffa.feed-on-join", true)) {
+                player.setFoodLevel(20);
+                player.setSaturation(20.0F);
+            }
+        }));
+    }
+
     public void leave(Player player) {
         PlayerSession session = sessions.remove(player.getUniqueId());
         plugin.combat().clear(player.getUniqueId());
@@ -99,6 +117,10 @@ public final class PlayerSessionManager {
 
     public String lastKit(UUID uniqueId) {
         return lastKit.get(uniqueId);
+    }
+
+    public Optional<KitDefinition> currentKit(Player player) {
+        return get(player).flatMap(session -> plugin.kits().kit(session.currentKitId()));
     }
 
     private PlayerSnapshot snapshot(Player player) {
@@ -137,7 +159,12 @@ public final class PlayerSessionManager {
             player.addPotionEffect(effect);
         }
         Location destination = snapshot.location();
-        if (!plugin.getConfig().getBoolean("ffa.leave.teleport-to-join-location", true)) {
+        if (plugin.getConfig().getBoolean("ffa.leave.use-main-lobby", true)) {
+            Location lobby = plugin.worlds().mainLobbyLocation();
+            if (lobby != null) {
+                destination = lobby;
+            }
+        } else if (!plugin.getConfig().getBoolean("ffa.leave.teleport-to-join-location", true)) {
             Location fallback = plugin.worlds().fallbackLeaveLocation();
             if (fallback != null) {
                 destination = fallback;

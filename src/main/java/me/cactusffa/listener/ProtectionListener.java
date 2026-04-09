@@ -9,6 +9,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
@@ -37,7 +39,12 @@ public final class ProtectionListener implements Listener {
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
-        if (plugin.sessions().isInFfa(event.getPlayer()) && !plugin.getConfig().getBoolean("ffa.protection.item-drop", false)) {
+        if (!plugin.sessions().isInFfa(event.getPlayer())) {
+            return;
+        }
+        boolean allowPlayerDrop = plugin.getConfig().getBoolean("ffa.player-inventory.allow-item-drop", true);
+        boolean allowProtectedDrop = plugin.getConfig().getBoolean("ffa.protection.item-drop", false);
+        if (!allowPlayerDrop || !allowProtectedDrop) {
             event.setCancelled(true);
         }
     }
@@ -54,6 +61,40 @@ public final class ProtectionListener implements Listener {
         if (event.getEntity() instanceof Player player && plugin.sessions().isInFfa(player) && !plugin.getConfig().getBoolean("ffa.protection.hunger", false)) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (!(event.getWhoClicked() instanceof Player player)) {
+            return;
+        }
+        if (!plugin.sessions().isInFfa(player)) {
+            return;
+        }
+        if (plugin.menus().isManaged(event.getView().getTopInventory())) {
+            return;
+        }
+        if (plugin.getConfig().getBoolean("ffa.player-inventory.allow-item-rearrange", true)) {
+            return;
+        }
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+        if (!(event.getWhoClicked() instanceof Player player)) {
+            return;
+        }
+        if (!plugin.sessions().isInFfa(player)) {
+            return;
+        }
+        if (plugin.menus().isManaged(event.getView().getTopInventory())) {
+            return;
+        }
+        if (plugin.getConfig().getBoolean("ffa.player-inventory.allow-item-rearrange", true)) {
+            return;
+        }
+        event.setCancelled(true);
     }
 
     @EventHandler

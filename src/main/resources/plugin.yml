@@ -4,6 +4,7 @@ main: me.cactusffa.CactusFFAPlugin
 api-version: "1.20"
 authors: [Codex]
 description: Configurable free-for-all plugin with arenas, kits, menus, combat isolation, and scoreboard control.
+softdepend: [Multiverse-Core]
 
 commands:
   ffa:
@@ -12,10 +13,10 @@ commands:
   leave:
     description: Leave FFA and restore your state.
     usage: /leave
-  cactusffa:
+  cacffa:
     description: Admin command for CactusFFA.
-    usage: /cactusffa
-    aliases: [cffa]
+    usage: /cacffa
+    aliases: [cactusffa, cffa]
     permission: cactusffa.admin
 
 permissions:

@@ -15,6 +15,7 @@ public record KitDefinition(
         List<String> lore,
         ItemStack[] contents,
         ItemStack[] armor,
-        ItemStack[] extras
+        ItemStack[] extras,
+        KitOptions options
 ) {
 }

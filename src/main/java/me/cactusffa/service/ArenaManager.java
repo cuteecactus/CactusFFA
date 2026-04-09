@@ -76,6 +76,18 @@ public final class ArenaManager {
         save();
     }
 
+    public boolean deleteArena(String id) {
+        String key = id.toLowerCase();
+        ConfigurationSection root = config.getConfigurationSection("arenas");
+        if (root == null || !root.contains(key)) {
+            return false;
+        }
+        root.set(key, null);
+        arenas.remove(key);
+        save();
+        return true;
+    }
+
     private void save() {
         try {
             config.save(file);

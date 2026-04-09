@@ -11,6 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
@@ -24,7 +25,7 @@ public final class MenuManager {
 
     private final CactusFFAPlugin plugin;
     private YamlConfiguration config;
-    private final Map<UUID, MenuContext> contexts = new HashMap<>();
+    private final Map<UUID, Map<Integer, String>> adminKitSlots = new HashMap<>();
 
     public MenuManager(CactusFFAPlugin plugin) {
         this.plugin = plugin;
@@ -39,16 +40,19 @@ public final class MenuManager {
         if (section == null) {
             return;
         }
-        Inventory inventory = plugin.getServer().createInventory(player, section.getInt("size", 27), ColorUtil.component(section.getString("title", "&0FFA")));
+        Inventory inventory = createInventory(section.getInt("size", 27), section.getString("title", "&0FFA"), MenuKeys.ROOT, MenuContext.root());
         fill(section, inventory);
         for (KitCategory category : plugin.kits().categories()) {
-            inventory.setItem(category.slot(), new ItemBuilder(category.icon()).name(category.displayName()).lore(category.lore()).hideFlags().build());
+            List<String> lore = new java.util.ArrayList<>(category.lore());
+            lore.add("");
+            lore.add("&8- &7Browse this category");
+            lore.add("&8- &aClick to open");
+            setIfInside(inventory, category.slot(), new ItemBuilder(category.icon()).name(category.displayName()).lore(lore).hideFlags().build());
         }
         for (KitDefinition kit : plugin.kits().uncategorizedKits()) {
-            inventory.setItem(kit.slot(), kitItem(kit));
+            setIfInside(inventory, kit.slot(), kitItem(kit));
         }
-        inventory.setItem(section.getInt("close-slot", 26), closeItem());
-        contexts.put(player.getUniqueId(), MenuContext.root());
+        setIfInside(inventory, section.getInt("close-slot", 26), closeItem());
         player.openInventory(inventory);
         play(player, "menu-open");
     }
@@ -59,14 +63,13 @@ public final class MenuManager {
             return;
         }
         String title = section.getString("title", "&0%category%").replace("%category%", category.displayName());
-        Inventory inventory = plugin.getServer().createInventory(player, section.getInt("size", 27), ColorUtil.component(title));
+        Inventory inventory = createInventory(section.getInt("size", 27), title, MenuKeys.CATEGORY, MenuContext.category(category.id()));
         fill(section, inventory);
         for (KitDefinition kit : plugin.kits().kitsInCategory(category.id())) {
-            inventory.setItem(kit.slot(), kitItem(kit));
+            setIfInside(inventory, kit.slot(), kitItem(kit));
         }
-        inventory.setItem(section.getInt("back-slot", 18), backItem());
-        inventory.setItem(section.getInt("close-slot", 26), closeItem());
-        contexts.put(player.getUniqueId(), MenuContext.category(category.id()));
+        setIfInside(inventory, section.getInt("back-slot", 18), backItem());
+        setIfInside(inventory, section.getInt("close-slot", 26), closeItem());
         player.openInventory(inventory);
         play(player, "menu-open");
     }
@@ -76,20 +79,69 @@ public final class MenuManager {
         if (section == null) {
             return;
         }
-        Inventory inventory = plugin.getServer().createInventory(player, section.getInt("size", 27), ColorUtil.component(section.getString("title", "&0CactusFFA Admin")));
+        Inventory inventory = createInventory(section.getInt("size", 27), section.getString("title", "&0CactusFFA Admin"), MenuKeys.ADMIN, MenuContext.admin());
         fill(section, inventory);
-        inventory.setItem(section.getInt("reload-slot", 10), new ItemBuilder(Material.BOOK).name("&aReload").lore(List.of("&7Reload all configs and menus.")).build());
-        inventory.setItem(section.getInt("create-arena-slot", 12), new ItemBuilder(Material.LIME_WOOL).name("&aCreate Arena").lore(List.of("&7Use /cactusffa arena create <id>", "&7while standing in the arena world.")).build());
-        inventory.setItem(section.getInt("set-arena-slot", 13), new ItemBuilder(Material.COMPASS).name("&eSet Arena Spawn").lore(List.of("&7Use /cactusffa arena setspawn <id>", "&7to update the selected arena.")).build());
-        inventory.setItem(section.getInt("teleport-arena-slot", 14), new ItemBuilder(Material.ENDER_PEARL).name("&bTeleport Arena").lore(List.of("&7Use /cactusffa arena tp <id>", "&7to preview an arena.")).build());
-        inventory.setItem(section.getInt("world-info-slot", 16), new ItemBuilder(Material.GRASS_BLOCK).name("&fArena World").lore(List.of("&7World: &a" + plugin.worlds().arenaWorldName(), "&7Void generation is configurable.")).build());
-        contexts.put(player.getUniqueId(), MenuContext.admin());
+        setIfInside(inventory, section.getInt("reload-slot", 10), new ItemBuilder(Material.BOOK).name("&aReload Plugin").lore(List.of("&7Refresh configs, kits, menus,", "&7arenas and scoreboards.")).hideFlags().build());
+        setIfInside(inventory, section.getInt("kit-options-slot", 11), new ItemBuilder(Material.NETHER_STAR).name("&bKit Control Center").lore(List.of("&7Open a dedicated kit browser", "&7for toggles and combat tuning.")).hideFlags().build());
+        setIfInside(inventory, section.getInt("create-arena-slot", 12), new ItemBuilder(Material.LIME_CONCRETE).name("&aCreate Arena").lore(List.of("&7Command: &f/cacffa arena create <id>", "&7Stand in &fffa_arenas &7first.")).hideFlags().build());
+        setIfInside(inventory, section.getInt("set-arena-slot", 13), new ItemBuilder(Material.RECOVERY_COMPASS).name("&eUpdate Arena Spawn").lore(List.of("&7Command: &f/cacffa arena setspawn <id>", "&7Overwrite an arena location safely.")).hideFlags().build());
+        setIfInside(inventory, section.getInt("teleport-arena-slot", 14), new ItemBuilder(Material.ENDER_PEARL).name("&3Teleport To Arena").lore(List.of("&7Command: &f/cacffa arena tp <id>", "&7Quick preview for testing kits.")).hideFlags().build());
+        setIfInside(inventory, section.getInt("set-lobby-slot", 15), new ItemBuilder(Material.OAK_DOOR).name("&dSet Main Lobby").lore(List.of("&7Command: &f/cacffa setlobby", "&7Save your current location", "&7as the FFA exit point.")).hideFlags().build());
+        setIfInside(inventory, section.getInt("world-info-slot", 16), new ItemBuilder(Material.GRASS_BLOCK).name("&fArena World Status").lore(List.of("&7World: &a" + plugin.worlds().arenaWorldName(), "&7Void spawn platform: &aEnabled", "&7Multiverse import: &aAttempted")).hideFlags().build());
         player.openInventory(inventory);
         play(player, "menu-open");
     }
 
-    public void handleClick(Player player, int slot) {
-        MenuContext context = contexts.get(player.getUniqueId());
+    public void openAdminKits(Player player) {
+        ConfigurationSection section = config.getConfigurationSection("menus.admin-kits");
+        if (section == null) {
+            return;
+        }
+        Inventory inventory = createInventory(section.getInt("size", 54), section.getString("title", "&0Select Kit"), MenuKeys.ADMIN_KITS, MenuContext.adminKits());
+        fill(section, inventory);
+        Map<Integer, String> slots = new HashMap<>();
+        int index = 0;
+        for (KitDefinition kit : plugin.kits().kits()) {
+            while (index == section.getInt("back-slot", 45) || index == section.getInt("close-slot", 53)) {
+                index++;
+            }
+            if (index >= inventory.getSize()) {
+                break;
+            }
+            setIfInside(inventory, index, adminKitItem(kit));
+            slots.put(index, kit.id());
+            index++;
+        }
+        adminKitSlots.put(player.getUniqueId(), slots);
+        setIfInside(inventory, section.getInt("back-slot", 45), backItem());
+        setIfInside(inventory, section.getInt("close-slot", 53), closeItem());
+        player.openInventory(inventory);
+        play(player, "menu-open");
+    }
+
+    public void openAdminKitOptions(Player player, KitDefinition kit) {
+        ConfigurationSection section = config.getConfigurationSection("menus.admin-kit-options");
+        if (section == null) {
+            return;
+        }
+        String title = section.getString("title", "&0%kit% Options").replace("%kit%", kit.displayName());
+        Inventory inventory = createInventory(section.getInt("size", 27), title, MenuKeys.ADMIN_KIT_OPTIONS, MenuContext.adminKitOptions(kit.id()));
+        fill(section, inventory);
+        setIfInside(inventory, section.getInt("regen-slot", 10), toggleItem(Material.GOLDEN_APPLE, "&aRegen After Kill", kit.options().regenAfterKill()));
+        setIfInside(inventory, section.getInt("rekit-slot", 11), toggleItem(Material.CHEST, "&bRekit After Kill", kit.options().rekitAfterKill()));
+        setIfInside(inventory, section.getInt("combat-minus-slot", 12), new ItemBuilder(Material.RED_WOOL).name("&cCombat -1s").lore(List.of("&7Decrease this kit's", "&7combat timer.")).build());
+        setIfInside(inventory, section.getInt("combat-info-slot", 13), new ItemBuilder(Material.CLOCK).name("&eCombat Timer").lore(List.of("&7Current: &f" + kit.options().combatLogSeconds() + "s")).build());
+        setIfInside(inventory, section.getInt("combat-plus-slot", 14), new ItemBuilder(Material.LIME_WOOL).name("&aCombat +1s").lore(List.of("&7Increase this kit's", "&7combat timer.")).build());
+        setIfInside(inventory, section.getInt("health-slot", 15), toggleItem(Material.NAME_TAG, "&dShow Health Below Name", kit.options().showHealthBelowName()));
+        setIfInside(inventory, section.getInt("drops-slot", 16), toggleItem(Material.DROPPER, "&6Drop Items On Kill", kit.options().dropItemsOnKill()));
+        setIfInside(inventory, section.getInt("back-slot", 18), backItem());
+        setIfInside(inventory, section.getInt("close-slot", 26), closeItem());
+        player.openInventory(inventory);
+        play(player, "menu-open");
+    }
+
+    public void handleClick(Player player, Inventory inventory, int slot) {
+        MenuContext context = context(inventory);
         if (context == null) {
             return;
         }
@@ -107,7 +159,14 @@ public final class MenuManager {
                 }
                 for (KitDefinition kit : plugin.kits().uncategorizedKits()) {
                     if (kit.slot() == slot) {
-                        plugin.getServer().dispatchCommand(player, "ffa " + kit.id());
+                        if (plugin.combat().isTagged(player.getUniqueId())) {
+                            plugin.messages().send(player, "combat-blocked");
+                            return;
+                        }
+                        plugin.arenas().find(kit.arenaId()).ifPresent(arena -> {
+                            plugin.sessions().join(player, kit, arena);
+                            plugin.messages().send(player, "joined-kit", Map.of("kit", kit.displayName(), "arena", arena.displayName()));
+                        });
                         return;
                     }
                 }
@@ -123,7 +182,14 @@ public final class MenuManager {
                 }
                 for (KitDefinition kit : plugin.kits().kitsInCategory(context.id())) {
                     if (kit.slot() == slot) {
-                        plugin.getServer().dispatchCommand(player, "ffa " + kit.id());
+                        if (plugin.combat().isTagged(player.getUniqueId())) {
+                            plugin.messages().send(player, "combat-blocked");
+                            return;
+                        }
+                        plugin.arenas().find(kit.arenaId()).ifPresent(arena -> {
+                            plugin.sessions().join(player, kit, arena);
+                            plugin.messages().send(player, "joined-kit", Map.of("kit", kit.displayName(), "arena", arena.displayName()));
+                        });
                         return;
                     }
                 }
@@ -133,25 +199,115 @@ public final class MenuManager {
                     plugin.reloadPlugin();
                     plugin.messages().send(player, "config-reloaded");
                     play(player, "join-kit");
+                    return;
+                }
+                if (slot == getSlot("menus.admin.kit-options-slot", 11)) {
+                    openAdminKits(player);
+                    return;
+                }
+                if (slot == getSlot("menus.admin.set-lobby-slot", 15)) {
+                    plugin.worlds().setMainLobby(player.getLocation());
+                    plugin.messages().send(player, "lobby-set");
+                    return;
+                }
+            }
+            case ADMIN_KITS -> {
+                if (slot == getSlot("menus.admin-kits.back-slot", 45)) {
+                    openAdmin(player);
+                    return;
+                }
+                if (slot == getSlot("menus.admin-kits.close-slot", 53)) {
+                    player.closeInventory();
+                    return;
+                }
+                Map<Integer, String> slots = adminKitSlots.get(player.getUniqueId());
+                if (slots != null && slots.containsKey(slot)) {
+                    plugin.kits().kit(slots.get(slot)).ifPresent(kit -> openAdminKitOptions(player, kit));
+                    return;
+                }
+            }
+            case ADMIN_KIT_OPTIONS -> {
+                KitDefinition kit = plugin.kits().kit(context.id()).orElse(null);
+                if (kit == null) {
+                    openAdminKits(player);
+                    return;
+                }
+                if (slot == getSlot("menus.admin-kit-options.back-slot", 18)) {
+                    openAdminKits(player);
+                    return;
+                }
+                if (slot == getSlot("menus.admin-kit-options.close-slot", 26)) {
+                    player.closeInventory();
+                    return;
+                }
+                if (slot == getSlot("menus.admin-kit-options.regen-slot", 10)) {
+                    plugin.kits().toggleOption(kit.id(), "regen-after-kill");
+                    openAdminKitOptions(player, plugin.kits().kit(kit.id()).orElse(kit));
+                    return;
+                }
+                if (slot == getSlot("menus.admin-kit-options.rekit-slot", 11)) {
+                    plugin.kits().toggleOption(kit.id(), "rekit-after-kill");
+                    openAdminKitOptions(player, plugin.kits().kit(kit.id()).orElse(kit));
+                    return;
+                }
+                if (slot == getSlot("menus.admin-kit-options.combat-minus-slot", 12)) {
+                    plugin.kits().setCombatLogSeconds(kit.id(), kit.options().combatLogSeconds() - 1);
+                    openAdminKitOptions(player, plugin.kits().kit(kit.id()).orElse(kit));
+                    return;
+                }
+                if (slot == getSlot("menus.admin-kit-options.combat-plus-slot", 14)) {
+                    plugin.kits().setCombatLogSeconds(kit.id(), kit.options().combatLogSeconds() + 1);
+                    openAdminKitOptions(player, plugin.kits().kit(kit.id()).orElse(kit));
+                    return;
+                }
+                if (slot == getSlot("menus.admin-kit-options.health-slot", 15)) {
+                    plugin.kits().toggleOption(kit.id(), "show-health-below-name");
+                    openAdminKitOptions(player, plugin.kits().kit(kit.id()).orElse(kit));
+                    return;
+                }
+                if (slot == getSlot("menus.admin-kit-options.drops-slot", 16)) {
+                    plugin.kits().toggleOption(kit.id(), "drop-items-on-kill");
+                    openAdminKitOptions(player, plugin.kits().kit(kit.id()).orElse(kit));
                 }
             }
         }
     }
 
     public boolean isManaged(Player player) {
-        return contexts.containsKey(player.getUniqueId());
+        return managed(player.getOpenInventory().getTopInventory());
+    }
+
+    public boolean isManaged(Inventory inventory) {
+        return managed(inventory);
     }
 
     public void clear(Player player) {
-        contexts.remove(player.getUniqueId());
+        adminKitSlots.remove(player.getUniqueId());
     }
 
     private ItemStack kitItem(KitDefinition kit) {
         List<String> lore = new java.util.ArrayList<>(kit.lore());
         lore.add("");
-        lore.add("&7Arena: &f" + kit.arenaId());
-        lore.add("&aClick to join");
+        lore.add("&8- &7Arena: &f" + kit.arenaId());
+        lore.add("&8- &7Combat: &f" + kit.options().combatLogSeconds() + "s");
+        lore.add("&8- &aClick to join");
         return new ItemBuilder(kit.icon()).name(kit.displayName()).lore(lore).hideFlags().build();
+    }
+
+    private ItemStack adminKitItem(KitDefinition kit) {
+        List<String> lore = new java.util.ArrayList<>(kit.lore());
+        lore.add("");
+        lore.add("&8- &7Regen Kill: " + status(kit.options().regenAfterKill()));
+        lore.add("&8- &7Rekit Kill: " + status(kit.options().rekitAfterKill()));
+        lore.add("&8- &7Combat: &f" + kit.options().combatLogSeconds() + "s");
+        lore.add("&8- &7Below Name HP: " + status(kit.options().showHealthBelowName()));
+        lore.add("&8- &7Drop Items: " + status(kit.options().dropItemsOnKill()));
+        lore.add("&8- &bClick to manage");
+        return new ItemBuilder(kit.icon()).name(kit.displayName()).lore(lore).hideFlags().build();
+    }
+
+    private ItemStack toggleItem(Material material, String name, boolean enabled) {
+        return new ItemBuilder(material).name(name).lore(List.of("&7Current: " + status(enabled), "&aClick to toggle")).build();
     }
 
     private void fill(ConfigurationSection section, Inventory inventory) {
@@ -178,8 +334,37 @@ public final class MenuManager {
         return new ItemBuilder(Material.BARRIER).name("&cClose").lore(List.of("&7Close this menu.")).build();
     }
 
+    private String status(boolean enabled) {
+        return enabled ? "&aEnabled" : "&cDisabled";
+    }
+
+    private Inventory createInventory(int size, String title, String key, MenuContext context) {
+        return plugin.getServer().createInventory(new MenuHolder(key, context), size, ColorUtil.component(title));
+    }
+
+    private boolean managed(Inventory inventory) {
+        return inventory != null && inventory.getHolder() instanceof MenuHolder;
+    }
+
+    private MenuContext context(Inventory inventory) {
+        if (inventory == null) {
+            return null;
+        }
+        InventoryHolder holder = inventory.getHolder();
+        if (holder instanceof MenuHolder menuHolder) {
+            return menuHolder.context();
+        }
+        return null;
+    }
+
     private int getSlot(String path, int fallback) {
         return config.getInt(path, fallback);
+    }
+
+    private void setIfInside(Inventory inventory, int slot, ItemStack item) {
+        if (slot >= 0 && slot < inventory.getSize()) {
+            inventory.setItem(slot, item);
+        }
     }
 
     private void play(Player player, String path) {

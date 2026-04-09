@@ -3,6 +3,7 @@ package me.cactusffa.service;
 import me.cactusffa.CactusFFAPlugin;
 import me.cactusffa.model.KitCategory;
 import me.cactusffa.model.KitDefinition;
+import me.cactusffa.model.KitOptions;
 import me.cactusffa.util.ItemSerializer;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -63,6 +64,7 @@ public final class KitManager {
                 if (section == null) {
                     continue;
                 }
+                ConfigurationSection options = section.getConfigurationSection("options");
                 ItemStack[] inventory = ItemSerializer.decodeItems(section.getString("inventory-base64", ""));
                 ItemStack[] armor = ItemSerializer.decodeItems(section.getString("armor-base64", ""));
                 ItemStack[] extra = ItemSerializer.decodeItems(section.getString("extra-base64", ""));
@@ -77,7 +79,14 @@ public final class KitManager {
                         section.getStringList("lore"),
                         inventory,
                         armor,
-                        extra
+                        extra,
+                        new KitOptions(
+                                options != null && options.getBoolean("regen-after-kill", false),
+                                options != null && options.getBoolean("rekit-after-kill", false),
+                                options == null ? plugin.getConfig().getInt("combat.tag-seconds", 15) : options.getInt("combat-log-seconds", plugin.getConfig().getInt("combat.tag-seconds", 15)),
+                                options != null && options.getBoolean("show-health-below-name", false),
+                                options != null && options.getBoolean("drop-items-on-kill", false)
+                        )
                 ));
             }
         }
@@ -105,6 +114,10 @@ public final class KitManager {
             return kit(args[0]);
         }
         return kit(String.join("_", args).toLowerCase(Locale.ROOT));
+    }
+
+    public boolean hasKitsInCategory(String categoryId) {
+        return kits.values().stream().anyMatch(kit -> kit.categoryId().equalsIgnoreCase(categoryId));
     }
 
     public List<KitDefinition> kitsInCategory(String categoryId) {
@@ -171,6 +184,11 @@ public final class KitManager {
         config.set(path + ".inventory-base64", "");
         config.set(path + ".armor-base64", "");
         config.set(path + ".extra-base64", "");
+        config.set(path + ".options.regen-after-kill", false);
+        config.set(path + ".options.rekit-after-kill", false);
+        config.set(path + ".options.combat-log-seconds", plugin.getConfig().getInt("combat.tag-seconds", 15));
+        config.set(path + ".options.show-health-below-name", false);
+        config.set(path + ".options.drop-items-on-kill", false);
         return save(config);
     }
 
@@ -219,6 +237,62 @@ public final class KitManager {
             words.add(part.substring(0, 1).toUpperCase(Locale.ROOT) + part.substring(1));
         }
         return String.join(" ", words);
+    }
+
+    public boolean toggleOption(String id, String optionKey) {
+        String normalizedId = normalizeId(id);
+        if (!kits.containsKey(normalizedId)) {
+            return false;
+        }
+        String path = "kits." + normalizedId + ".options." + optionKey;
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        if (!config.contains(path)) {
+            return false;
+        }
+        config.set(path, !config.getBoolean(path));
+        return save(config);
+    }
+
+    public boolean setCombatLogSeconds(String id, int seconds) {
+        String normalizedId = normalizeId(id);
+        if (!kits.containsKey(normalizedId)) {
+            return false;
+        }
+        String path = "kits." + normalizedId + ".options.combat-log-seconds";
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        if (!config.contains(path)) {
+            return false;
+        }
+        config.set(path, Math.max(1, seconds));
+        return save(config);
+    }
+
+    public boolean deleteKit(String id) {
+        String normalizedId = normalizeId(id);
+        if (!kits.containsKey(normalizedId)) {
+            return false;
+        }
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        String path = "kits." + normalizedId;
+        if (!config.contains(path)) {
+            return false;
+        }
+        config.set(path, null);
+        return save(config);
+    }
+
+    public boolean deleteCategory(String id) {
+        String normalizedId = normalizeId(id);
+        if (!categories.containsKey(normalizedId) || hasKitsInCategory(normalizedId)) {
+            return false;
+        }
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        String path = "categories." + normalizedId;
+        if (!config.contains(path)) {
+            return false;
+        }
+        config.set(path, null);
+        return save(config);
     }
 
     private int nextCategorySlot() {

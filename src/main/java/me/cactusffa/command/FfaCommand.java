@@ -32,8 +32,19 @@ public final class FfaCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
+            String defaultCategory = plugin.getConfig().getString("ffa.default-category-on-command", "");
+            if (defaultCategory != null && !defaultCategory.isBlank()) {
+                plugin.kits().category(defaultCategory).ifPresentOrElse(category -> plugin.menus().openCategory(player, category),
+                        () -> plugin.menus().openRoot(player));
+                return true;
+            }
             plugin.menus().openRoot(player);
             return true;
+        }
+
+        Optional<KitDefinition> kit = plugin.kits().resolve(args);
+        if (kit.isPresent()) {
+            return joinKit(player, kit.get());
         }
 
         Optional<KitCategory> category = plugin.kits().category(args[0]);
@@ -43,24 +54,28 @@ public final class FfaCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        Optional<KitDefinition> kit = plugin.kits().resolve(args);
-        if (kit.isEmpty()) {
-            plugin.messages().send(player, "unknown-ffa-target");
+        plugin.messages().send(player, "unknown-ffa-target");
+        return true;
+    }
+
+    private boolean joinKit(Player player, KitDefinition kit) {
+        if (plugin.combat().isTagged(player.getUniqueId())) {
+            plugin.messages().send(player, "combat-blocked");
             return true;
         }
-        if (!kit.get().permission().isBlank() && !player.hasPermission(kit.get().permission())) {
+        if (!kit.permission().isBlank() && !player.hasPermission(kit.permission())) {
             plugin.messages().send(player, "menu-no-access");
             return true;
         }
 
-        Optional<Arena> arena = plugin.arenas().find(kit.get().arenaId());
+        Optional<Arena> arena = plugin.arenas().find(kit.arenaId());
         if (arena.isEmpty()) {
-            plugin.messages().send(player, "arena-missing", Map.of("arena", kit.get().arenaId()));
+            plugin.messages().send(player, "arena-missing", Map.of("arena", kit.arenaId()));
             return true;
         }
 
-        plugin.sessions().join(player, kit.get(), arena.get());
-        plugin.messages().send(player, "joined-kit", Map.of("kit", kit.get().displayName(), "arena", arena.get().displayName()));
+        plugin.sessions().join(player, kit, arena.get());
+        plugin.messages().send(player, "joined-kit", Map.of("kit", kit.displayName(), "arena", arena.get().displayName()));
         return true;
     }
 

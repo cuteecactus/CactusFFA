@@ -64,7 +64,8 @@ public final class CombatManager {
         if (!plugin.getConfig().getBoolean("combat.enabled", true)) {
             return;
         }
-        long expires = System.currentTimeMillis() + (tagSeconds * 1000L);
+        int seconds = resolveCombatSeconds(first, second);
+        long expires = System.currentTimeMillis() + (seconds * 1000L);
         upsert(first.getUniqueId(), second.getUniqueId(), expires);
         upsert(second.getUniqueId(), first.getUniqueId(), expires);
     }
@@ -122,5 +123,15 @@ public final class CombatManager {
         }
         tag.opponent(opponent);
         tag.expiresAt(expires);
+    }
+
+    private int resolveCombatSeconds(Player first, Player second) {
+        int firstSeconds = plugin.sessions().currentKit(first)
+                .map(kit -> kit.options().combatLogSeconds())
+                .orElse(tagSeconds);
+        int secondSeconds = plugin.sessions().currentKit(second)
+                .map(kit -> kit.options().combatLogSeconds())
+                .orElse(tagSeconds);
+        return Math.max(1, Math.max(firstSeconds, secondSeconds));
     }
 }
