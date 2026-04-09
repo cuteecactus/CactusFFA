@@ -110,9 +110,9 @@ public final class CombatListener implements Listener {
     private void applyKillRewards(Player killer) {
         plugin.sessions().currentKit(killer).ifPresent(kit -> {
             if (kit.options().regenAfterKill()) {
-                double maxHealth = killer.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH) == null
+                double maxHealth = killer.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH) == null
                         ? 20.0D
-                        : killer.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH).getValue();
+                        : killer.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH).getValue();
                 killer.setHealth(Math.min(maxHealth, killer.getHealth() + 8.0D));
                 killer.setFoodLevel(20);
                 killer.setSaturation(20.0F);

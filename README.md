@@ -30,17 +30,17 @@ You may need `Multiverse-Core` to teleport to the `ffa_arenas` world initially, 
 ## Build
 
 ```powershell
-mvn -DskipTests package
+mvn clean package
 ```
 
 Output jar:
 
-- `target/CactusFFA-1.0.0.jar`
+- `target/CactusFFA-*.jar`
 
 ## Installation
 
 1. Build the jar or use the compiled release jar.
-2. Put `CactusFFA-1.0.0.jar` into your server `plugins` folder.
+2. Put `CactusFFA-*.jar` into your server `plugins` folder.
 3. Start the server once.
 4. Stop the server and review the generated config files in `plugins/CactusFFA/`.
 5. Start the server again and begin setup.
@@ -119,84 +119,6 @@ Important files:
 - `plugins/CactusFFA/arenas.yml`
 
 The plugin now merges missing config keys on startup and reload without overwriting your existing values.
-
-## Screenshots
-
-Add screenshots here before publishing the plugin page or repository.
-
-Recommended screenshots to upload:
-
-- main `/ffa` menu showing categories
-- category menu showing kits inside one category
-- admin panel overview
-- kit options editor GUI
-- an arena in the `ffa_arenas` world
-- below-name health / scoreboard while fighting
-
-### Screenshot Placeholder 1
-
-Main `/ffa` menu
-
-```md
-![Main FFA Menu](docs/images/main-ffa-menu.png)
-```
-
-### Screenshot Placeholder 2
-
-Category kit menu
-
-```md
-![Category Menu](docs/images/category-menu.png)
-```
-
-### Screenshot Placeholder 3
-
-Admin panel
-
-```md
-![Admin Panel](docs/images/admin-panel.png)
-```
-
-### Screenshot Placeholder 4
-
-Kit options editor
-
-```md
-![Kit Options](docs/images/kit-options.png)
-```
-
-### Screenshot Placeholder 5
-
-Arena preview or live combat screenshot
-
-```md
-![Arena Combat](docs/images/arena-combat.png)
-```
-
-## How To Upload Screenshots To A README
-
-If this README is on GitHub, the cleanest way is:
-
-1. Create a folder such as `docs/images/` in the repository.
-2. Put your screenshot files there.
-3. Reference them in Markdown using relative paths.
-
-Example:
-
-```md
-![Main FFA Menu](docs/images/main-ffa-menu.png)
-```
-
-If you are uploading the README somewhere else:
-
-1. Upload the images to an image host or your plugin page assets.
-2. Use the direct image URL in Markdown.
-
-Example:
-
-```md
-![Main FFA Menu](https://your-site.com/images/main-ffa-menu.png)
-```
 
 ## Production Notes
 

@@ -1,7 +1,7 @@
 name: CactusFFA
 version: 1.0.0
 main: me.cactusffa.CactusFFAPlugin
-api-version: "1.20"
+api-version: "1.21"
 authors: [Codex]
 description: Configurable free-for-all plugin with arenas, kits, menus, combat isolation, and scoreboard control.
 softdepend: [Multiverse-Core]

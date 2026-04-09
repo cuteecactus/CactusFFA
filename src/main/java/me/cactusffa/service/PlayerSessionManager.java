@@ -58,7 +58,7 @@ public final class PlayerSessionManager {
             }
         }
         if (plugin.getConfig().getBoolean("ffa.heal-on-join", true)) {
-            double maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH) == null ? 20.0D : player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+            double maxHealth = player.getAttribute(Attribute.MAX_HEALTH) == null ? 20.0D : player.getAttribute(Attribute.MAX_HEALTH).getValue();
             player.setHealth(Math.min(maxHealth, 20.0D));
         }
         if (plugin.getConfig().getBoolean("ffa.feed-on-join", true)) {
@@ -76,7 +76,7 @@ public final class PlayerSessionManager {
             player.getInventory().setExtraContents(copy(kit.extras()));
             player.updateInventory();
             if (plugin.getConfig().getBoolean("ffa.heal-on-join", true)) {
-                double maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH) == null ? 20.0D : player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+                double maxHealth = player.getAttribute(Attribute.MAX_HEALTH) == null ? 20.0D : player.getAttribute(Attribute.MAX_HEALTH).getValue();
                 player.setHealth(Math.min(maxHealth, 20.0D));
             }
             if (plugin.getConfig().getBoolean("ffa.feed-on-join", true)) {
@@ -146,7 +146,7 @@ public final class PlayerSessionManager {
         player.getInventory().setArmorContents(copy(snapshot.armor()));
         player.getInventory().setExtraContents(copy(snapshot.extra()));
         player.setGameMode(snapshot.gameMode());
-        double maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH) == null ? 20.0D : player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        double maxHealth = player.getAttribute(Attribute.MAX_HEALTH) == null ? 20.0D : player.getAttribute(Attribute.MAX_HEALTH).getValue();
         player.setHealth(Math.min(snapshot.health(), maxHealth));
         player.setFoodLevel(snapshot.foodLevel());
         player.setSaturation(snapshot.saturation());
