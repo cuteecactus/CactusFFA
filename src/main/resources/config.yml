@@ -1,0 +1,82 @@
+world:
+  arena-world: "ffa_arenas"
+  create-void-world: true
+  force-load-spawn-chunk: true
+
+ffa:
+  auto-respawn: true
+  restore-on-leave: true
+  save-last-kit: true
+  clear-potion-effects-on-join: true
+  heal-on-join: true
+  feed-on-join: true
+  default-category-on-command: ""
+  scoreboard:
+    enabled: true
+    title: "&a&lCactusFFA"
+    lines:
+      - "&7&m----------------"
+      - "&fKit: &a%kit%"
+      - "&fArena: &a%arena%"
+      - "&fKills: &a%kills%"
+      - "&fStreak: &a%streak%"
+      - "&fCombat: &a%combat%"
+      - "&7&m----------------"
+  health-below-name:
+    format: "&c%hearts% HP"
+    render-type: "INTEGER"
+    update-interval-ticks: 10
+  actionbar:
+    combat: "&cIn combat with &f%opponent% &7(%seconds%s)"
+    idle: "&aYou are safe."
+  leave:
+    teleport-to-join-location: true
+    use-main-lobby: true
+    main-lobby:
+      enabled: false
+      world: "world"
+      x: 0.5
+      y: 80.0
+      z: 0.5
+      yaw: 0.0
+      pitch: 0.0
+    fallback-location:
+      world: "world"
+      x: 0.5
+      y: 80.0
+      z: 0.5
+      yaw: 0.0
+      pitch: 0.0
+  protection:
+    block-break: true
+    block-place: true
+    item-drop: true
+    item-pickup: false
+    hunger: false
+    weather-change: true
+    mob-spawn: true
+  player-inventory:
+    allow-item-drop: true
+    allow-item-rearrange: true
+  kill-drops:
+    include-main-inventory: true
+    include-armor: true
+    include-extra: true
+
+combat:
+  enabled: true
+  tag-seconds: 15
+  isolated-duel: true
+  block-commands:
+    - "spawn"
+    - "home"
+    - "warp"
+
+sounds:
+  menu-open: "BLOCK_CHEST_OPEN"
+  join-kit: "ENTITY_PLAYER_LEVELUP"
+  leave-ffa: "ENTITY_ENDERMAN_TELEPORT"
+  denied: "BLOCK_NOTE_BLOCK_BASS"
+
+stats:
+  reset-kill-streak-on-death: true

@@ -1,0 +1,25 @@
+name: CactusFFA
+version: 1.0.0
+main: me.cactusffa.CactusFFAPlugin
+api-version: "1.21"
+authors: [Codex]
+description: Configurable free-for-all plugin with arenas, kits, menus, combat isolation, and scoreboard control.
+softdepend: [Multiverse-Core]
+
+commands:
+  ffa:
+    description: Open the FFA menu or join a kit/category.
+    usage: /ffa [category] [kit]
+  leave:
+    description: Leave FFA and restore your state.
+    usage: /leave
+  cacffa:
+    description: Admin command for CactusFFA.
+    usage: /cacffa
+    aliases: [cactusffa, cffa]
+    permission: cactusffa.admin
+
+permissions:
+  cactusffa.admin:
+    description: Full admin access to CactusFFA.
+    default: op
