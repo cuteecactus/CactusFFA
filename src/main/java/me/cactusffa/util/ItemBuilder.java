@@ -1,6 +1,7 @@
 package me.cactusffa.util;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -19,7 +20,7 @@ public final class ItemBuilder {
 
     public ItemBuilder name(String name) {
         ItemMeta meta = itemStack.getItemMeta();
-        meta.displayName(ColorUtil.component(name));
+        meta.displayName(ColorUtil.component(name).decoration(TextDecoration.ITALIC, false));
         itemStack.setItemMeta(meta);
         return this;
     }
@@ -28,7 +29,7 @@ public final class ItemBuilder {
         ItemMeta meta = itemStack.getItemMeta();
         List<Component> lore = new ArrayList<>();
         for (String line : lines) {
-            lore.add(ColorUtil.component(line));
+            lore.add(ColorUtil.component(line).decoration(TextDecoration.ITALIC, false));
         }
         meta.lore(lore);
         itemStack.setItemMeta(meta);

@@ -44,7 +44,6 @@ public final class CactusFFAPlugin extends JavaPlugin {
 
         this.messageService = new MessageService(this);
         this.worldService = new WorldService(this);
-        this.worldService.prepareArenaWorld();
 
         this.arenaManager = new ArenaManager(this);
         this.kitManager = new KitManager(this);
@@ -80,7 +79,6 @@ public final class CactusFFAPlugin extends JavaPlugin {
     public void reloadPlugin() {
         updateConfigs();
         messageService.reload();
-        worldService.prepareArenaWorld();
         arenaManager.reload();
         kitManager.reload();
         menuManager.reload();

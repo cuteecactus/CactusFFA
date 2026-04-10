@@ -1,19 +1,16 @@
 package me.cactusffa.listener;
 
 import me.cactusffa.CactusFFAPlugin;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
-import org.bukkit.event.weather.WeatherChangeEvent;
 
 public final class ProtectionListener implements Listener {
 
@@ -97,19 +94,4 @@ public final class ProtectionListener implements Listener {
         event.setCancelled(true);
     }
 
-    @EventHandler
-    public void onWeather(WeatherChangeEvent event) {
-        if (plugin.worlds().isArenaWorld(event.getWorld()) && plugin.getConfig().getBoolean("ffa.protection.weather-change", true)) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onSpawn(CreatureSpawnEvent event) {
-        if (plugin.worlds().isArenaWorld(event.getLocation().getWorld())
-                && event.getEntityType() != EntityType.PLAYER
-                && plugin.getConfig().getBoolean("ffa.protection.mob-spawn", true)) {
-            event.setCancelled(true);
-        }
-    }
 }

@@ -68,10 +68,6 @@ public final class AdminCommand implements CommandExecutor, TabCompleter {
         }
         String action = args[1].toLowerCase(Locale.ROOT);
         String id = plugin.kits().normalizeId(args[2]);
-        if ((action.equals("create") || action.equals("setspawn")) && !plugin.worlds().isArenaWorld(player.getWorld())) {
-            plugin.messages().send(player, "must-be-in-world", Map.of("world", plugin.worlds().arenaWorldName()));
-            return true;
-        }
         switch (action) {
             case "create" -> {
                 plugin.arenas().saveArena(id, player.getLocation());
