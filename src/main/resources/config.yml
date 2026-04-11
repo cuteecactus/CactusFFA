@@ -1,8 +1,3 @@
-world:
-  arena-world: "ffa_arenas"
-  create-void-world: true
-  force-load-spawn-chunk: true
-
 ffa:
   auto-respawn: true
   restore-on-leave: true
@@ -53,8 +48,6 @@ ffa:
     item-drop: true
     item-pickup: false
     hunger: false
-    weather-change: true
-    mob-spawn: true
   player-inventory:
     allow-item-drop: true
     allow-item-rearrange: true

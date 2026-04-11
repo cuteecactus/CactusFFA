@@ -8,7 +8,7 @@ It includes:
 
 - kit categories and direct kit joining
 - per-kit arenas
-- void arena world support for `ffa_arenas`
+- arena creation in any world
 - GUI-based kit selection
 - combat-lock duels
 - per-kit combat options
@@ -18,14 +18,8 @@ It includes:
 
 ## Requirements
 
-- Paper 1.20.6+
+- Paper 1.21.11+
 - Java 21
-
-Optional but recommended:
-
-- Multiverse-Core
-
-You may need `Multiverse-Core` to teleport to the `ffa_arenas` world initially, especially if you want to manage or import that world through Multiverse commands.
 
 ## Build
 
@@ -47,20 +41,8 @@ Output jar:
 
 ## First Setup
 
-1. Make sure the arena world exists.
-2. If you use Multiverse-Core, you can try:
-
-```text
-/mvtp ffa_arenas
-```
-
-or import it manually if needed:
-
-```text
-/mv import ffa_arenas normal
-```
-
-3. Stand inside the `ffa_arenas` world and create arenas:
+1. Go to the world and location where you want an arena.
+2. Create arenas directly at your current position:
 
 ```text
 /cacffa arena create nethop
@@ -68,14 +50,14 @@ or import it manually if needed:
 /cacffa arena create sword-speed
 ```
 
-4. Set the main server lobby location players should return to when leaving FFA:
+3. Set the main server lobby location players should return to when leaving FFA:
 
 ```text
 /cacffa setlobby
 ```
 
-5. Edit your kits in `plugins/CactusFFA/kits.yml`.
-6. Reload the plugin:
+4. Edit your kits in `plugins/CactusFFA/kits.yml`.
+5. Reload the plugin:
 
 ```text
 /cacffa reload
@@ -124,8 +106,8 @@ The plugin now merges missing config keys on startup and reload without overwrit
 
 - Review `kits.yml` carefully before launch.
 - Confirm every kit points to a valid arena.
+- Create arenas in whichever worlds fit your server design. A dedicated FFA world is not required.
 - Test `/leave`, respawn, kill rewards, combat-locking, and lobby teleporting before public release.
-- If `ffa_arenas` was created incorrectly in a previous test, remove the broken world and let the plugin create it again.
 
 ## Credits
 

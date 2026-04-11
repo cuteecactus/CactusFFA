@@ -83,11 +83,11 @@ public final class MenuManager {
         fill(section, inventory);
         setIfInside(inventory, section.getInt("reload-slot", 10), new ItemBuilder(Material.BOOK).name("&aReload Plugin").lore(List.of("&7Refresh configs, kits, menus,", "&7arenas and scoreboards.")).hideFlags().build());
         setIfInside(inventory, section.getInt("kit-options-slot", 11), new ItemBuilder(Material.NETHER_STAR).name("&bKit Control Center").lore(List.of("&7Open a dedicated kit browser", "&7for toggles and combat tuning.")).hideFlags().build());
-        setIfInside(inventory, section.getInt("create-arena-slot", 12), new ItemBuilder(Material.LIME_CONCRETE).name("&aCreate Arena").lore(List.of("&7Command: &f/cacffa arena create <id>", "&7Stand in &fffa_arenas &7first.")).hideFlags().build());
+        setIfInside(inventory, section.getInt("create-arena-slot", 12), new ItemBuilder(Material.LIME_CONCRETE).name("&aCreate Arena").lore(List.of("&7Command: &f/cacffa arena create <id>", "&7Creates an arena in your", "&7current world and position.")).hideFlags().build());
         setIfInside(inventory, section.getInt("set-arena-slot", 13), new ItemBuilder(Material.RECOVERY_COMPASS).name("&eUpdate Arena Spawn").lore(List.of("&7Command: &f/cacffa arena setspawn <id>", "&7Overwrite an arena location safely.")).hideFlags().build());
         setIfInside(inventory, section.getInt("teleport-arena-slot", 14), new ItemBuilder(Material.ENDER_PEARL).name("&3Teleport To Arena").lore(List.of("&7Command: &f/cacffa arena tp <id>", "&7Quick preview for testing kits.")).hideFlags().build());
         setIfInside(inventory, section.getInt("set-lobby-slot", 15), new ItemBuilder(Material.OAK_DOOR).name("&dSet Main Lobby").lore(List.of("&7Command: &f/cacffa setlobby", "&7Save your current location", "&7as the FFA exit point.")).hideFlags().build());
-        setIfInside(inventory, section.getInt("world-info-slot", 16), new ItemBuilder(Material.GRASS_BLOCK).name("&fArena World Status").lore(List.of("&7World: &a" + plugin.worlds().arenaWorldName(), "&7Void spawn platform: &aEnabled", "&7Multiverse import: &aAttempted")).hideFlags().build());
+        setIfInside(inventory, section.getInt("world-info-slot", 16), new ItemBuilder(Material.GRASS_BLOCK).name("&fArena Placement").lore(List.of("&7Arenas can be created", "&7in any world.", "&7No dedicated FFA world is required.")).hideFlags().build());
         player.openInventory(inventory);
         play(player, "menu-open");
     }
