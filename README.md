@@ -100,8 +100,6 @@ Important files:
 - `plugins/CactusFFA/kits.yml`
 - `plugins/CactusFFA/arenas.yml`
 
-The plugin now merges missing config keys on startup and reload without overwriting your existing values.
-
 ## Production Notes
 
 - Review `kits.yml` carefully before launch.
