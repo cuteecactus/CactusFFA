@@ -114,8 +114,12 @@ public final class CombatListener implements Listener {
                         ? 20.0D
                         : killer.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH).getValue();
                 killer.setHealth(Math.min(maxHealth, killer.getHealth() + 8.0D));
+            }
+            if (kit.options().hunger()) {
                 killer.setFoodLevel(20);
-                killer.setSaturation(20.0F);
+                if (kit.options().saturation()) {
+                    killer.setSaturation(20.0F);
+                }
             }
             if (kit.options().rekitAfterKill()) {
                 Bukkit.getScheduler().runTask(plugin, () -> plugin.sessions().rekit(killer));

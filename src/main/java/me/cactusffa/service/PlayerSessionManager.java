@@ -61,9 +61,11 @@ public final class PlayerSessionManager {
             double maxHealth = player.getAttribute(Attribute.MAX_HEALTH) == null ? 20.0D : player.getAttribute(Attribute.MAX_HEALTH).getValue();
             player.setHealth(Math.min(maxHealth, 20.0D));
         }
-        if (plugin.getConfig().getBoolean("ffa.feed-on-join", true)) {
+        if (kit.options().hunger() && plugin.getConfig().getBoolean("ffa.feed-on-join", true)) {
             player.setFoodLevel(20);
-            player.setSaturation(20.0F);
+            if (kit.options().saturation()) {
+                player.setSaturation(20.0F);
+            }
         }
         plugin.scoreboard().apply(player);
     }
@@ -79,9 +81,11 @@ public final class PlayerSessionManager {
                 double maxHealth = player.getAttribute(Attribute.MAX_HEALTH) == null ? 20.0D : player.getAttribute(Attribute.MAX_HEALTH).getValue();
                 player.setHealth(Math.min(maxHealth, 20.0D));
             }
-            if (plugin.getConfig().getBoolean("ffa.feed-on-join", true)) {
+            if (kit.options().hunger() && plugin.getConfig().getBoolean("ffa.feed-on-join", true)) {
                 player.setFoodLevel(20);
-                player.setSaturation(20.0F);
+                if (kit.options().saturation()) {
+                    player.setSaturation(20.0F);
+                }
             }
         }));
     }

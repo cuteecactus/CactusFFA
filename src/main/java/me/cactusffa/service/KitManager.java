@@ -80,12 +80,14 @@ public final class KitManager {
                         inventory,
                         armor,
                         extra,
-                        new KitOptions(
+new KitOptions(
                                 options != null && options.getBoolean("regen-after-kill", false),
                                 options != null && options.getBoolean("rekit-after-kill", false),
                                 options == null ? plugin.getConfig().getInt("combat.tag-seconds", 15) : options.getInt("combat-log-seconds", plugin.getConfig().getInt("combat.tag-seconds", 15)),
                                 options != null && options.getBoolean("show-health-below-name", false),
-                                options != null && options.getBoolean("drop-items-on-kill", false)
+                                options != null && options.getBoolean("drop-items-on-kill", false),
+                                options != null && options.getBoolean("hunger", true),
+                                options != null && options.getBoolean("saturation", true)
                         )
                 ));
             }
@@ -184,11 +186,13 @@ public final class KitManager {
         config.set(path + ".inventory-base64", "");
         config.set(path + ".armor-base64", "");
         config.set(path + ".extra-base64", "");
-        config.set(path + ".options.regen-after-kill", false);
+config.set(path + ".options.regen-after-kill", false);
         config.set(path + ".options.rekit-after-kill", false);
         config.set(path + ".options.combat-log-seconds", plugin.getConfig().getInt("combat.tag-seconds", 15));
         config.set(path + ".options.show-health-below-name", false);
         config.set(path + ".options.drop-items-on-kill", false);
+        config.set(path + ".options.hunger", true);
+        config.set(path + ".options.saturation", true);
         return save(config);
     }
 

@@ -5,6 +5,8 @@ public record KitOptions(
         boolean rekitAfterKill,
         int combatLogSeconds,
         boolean showHealthBelowName,
-        boolean dropItemsOnKill
+        boolean dropItemsOnKill,
+        boolean hunger,
+        boolean saturation
 ) {
 }

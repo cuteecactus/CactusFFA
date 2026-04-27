@@ -133,7 +133,9 @@ public final class MenuManager {
         setIfInside(inventory, section.getInt("combat-info-slot", 13), new ItemBuilder(Material.CLOCK).name("&eCombat Timer").lore(List.of("&7Current: &f" + kit.options().combatLogSeconds() + "s")).build());
         setIfInside(inventory, section.getInt("combat-plus-slot", 14), new ItemBuilder(Material.LIME_WOOL).name("&aCombat +1s").lore(List.of("&7Increase this kit's", "&7combat timer.")).build());
         setIfInside(inventory, section.getInt("health-slot", 15), toggleItem(Material.NAME_TAG, "&dShow Health Below Name", kit.options().showHealthBelowName()));
-        setIfInside(inventory, section.getInt("drops-slot", 16), toggleItem(Material.DROPPER, "&6Drop Items On Kill", kit.options().dropItemsOnKill()));
+setIfInside(inventory, section.getInt("drops-slot", 16), toggleItem(Material.DROPPER, "&6Drop Items On Kill", kit.options().dropItemsOnKill()));
+        setIfInside(inventory, section.getInt("hunger-slot", 19), toggleItem(Material.COOKED_BEEF, "&eHunger", kit.options().hunger()));
+        setIfInside(inventory, section.getInt("saturation-slot", 20), toggleItem(Material.GOLDEN_CARROT, "&eSaturation", kit.options().saturation()));
         setIfInside(inventory, section.getInt("back-slot", 18), backItem());
         setIfInside(inventory, section.getInt("close-slot", 26), closeItem());
         player.openInventory(inventory);
@@ -265,8 +267,18 @@ public final class MenuManager {
                     openAdminKitOptions(player, plugin.kits().kit(kit.id()).orElse(kit));
                     return;
                 }
-                if (slot == getSlot("menus.admin-kit-options.drops-slot", 16)) {
+if (slot == getSlot("menus.admin-kit-options.drops-slot", 16)) {
                     plugin.kits().toggleOption(kit.id(), "drop-items-on-kill");
+                    openAdminKitOptions(player, plugin.kits().kit(kit.id()).orElse(kit));
+                    return;
+                }
+                if (slot == getSlot("menus.admin-kit-options.hunger-slot", 19)) {
+                    plugin.kits().toggleOption(kit.id(), "hunger");
+                    openAdminKitOptions(player, plugin.kits().kit(kit.id()).orElse(kit));
+                    return;
+                }
+                if (slot == getSlot("menus.admin-kit-options.saturation-slot", 20)) {
+                    plugin.kits().toggleOption(kit.id(), "saturation");
                     openAdminKitOptions(player, plugin.kits().kit(kit.id()).orElse(kit));
                 }
             }
@@ -294,7 +306,7 @@ public final class MenuManager {
         return new ItemBuilder(kit.icon()).name(kit.displayName()).lore(lore).hideFlags().build();
     }
 
-    private ItemStack adminKitItem(KitDefinition kit) {
+private ItemStack adminKitItem(KitDefinition kit) {
         List<String> lore = new java.util.ArrayList<>(kit.lore());
         lore.add("");
         lore.add("&8- &7Regen Kill: " + status(kit.options().regenAfterKill()));
@@ -302,6 +314,8 @@ public final class MenuManager {
         lore.add("&8- &7Combat: &f" + kit.options().combatLogSeconds() + "s");
         lore.add("&8- &7Below Name HP: " + status(kit.options().showHealthBelowName()));
         lore.add("&8- &7Drop Items: " + status(kit.options().dropItemsOnKill()));
+        lore.add("&8- &7Hunger: " + status(kit.options().hunger()));
+        lore.add("&8- &7Saturation: " + status(kit.options().saturation()));
         lore.add("&8- &bClick to manage");
         return new ItemBuilder(kit.icon()).name(kit.displayName()).lore(lore).hideFlags().build();
     }
