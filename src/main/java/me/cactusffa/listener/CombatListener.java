@@ -55,6 +55,7 @@ public final class CombatListener implements Listener {
         if (!plugin.sessions().isInFfa(victim)) {
             return;
         }
+        String arenaId = plugin.sessions().get(victim).map(s -> s.currentArenaId()).orElse(null);
         KitDefinition victimKit = plugin.sessions().currentKit(victim).orElse(null);
         Player killer = victim.getKiller();
         if (killer != null && plugin.sessions().isInFfa(killer)) {
@@ -64,6 +65,27 @@ public final class CombatListener implements Listener {
         handleDrops(event, victim, victimKit);
         plugin.sessions().recordDeath(victim);
         plugin.combat().clear(victim.getUniqueId());
+
+        boolean customKillMessage = plugin.getConfig().getBoolean("ffa.kill-message.enabled", true);
+        if (customKillMessage) {
+            String message = plugin.getConfig().getString("ffa.kill-message.message", "&c%victim% &ewas slain by &c%killer%");
+            message = message.replace("%victim%", victim.getName());
+            if (killer != null) {
+                message = message.replace("%killer%", killer.getName());
+            } else {
+                message = message.replace("%killer%", "Unknown");
+            }
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (plugin.sessions().isInFfa(p)) {
+                    String playerArenaId = plugin.sessions().get(p).map(s -> s.currentArenaId()).orElse(null);
+                    if (arenaId != null && arenaId.equals(playerArenaId)) {
+                        p.sendMessage(message);
+                    }
+                }
+            }
+            event.setDeathMessage("");
+        }
+
         if (plugin.getConfig().getBoolean("ffa.auto-respawn", true)) {
             Bukkit.getScheduler().runTask(plugin, () -> victim.spigot().respawn());
         }

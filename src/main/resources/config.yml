@@ -6,6 +6,9 @@ ffa:
   heal-on-join: true
   feed-on-join: true
   default-category-on-command: ""
+  kill-message:
+    enabled: true
+    message: "&c%victim% &ewas slain by &c%killer%"
   scoreboard:
     enabled: true
     title: "&a&lCactusFFA"
