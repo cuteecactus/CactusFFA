@@ -87,7 +87,8 @@ new KitOptions(
                                 options != null && options.getBoolean("show-health-below-name", false),
                                 options != null && options.getBoolean("drop-items-on-kill", false),
                                 options != null && options.getBoolean("hunger", true),
-                                options != null && options.getBoolean("saturation", true)
+                                options != null && options.getBoolean("saturation", true),
+                                options != null && options.getBoolean("pickup-items", false)
                         )
                 ));
             }
@@ -193,6 +194,7 @@ config.set(path + ".options.regen-after-kill", false);
         config.set(path + ".options.drop-items-on-kill", false);
         config.set(path + ".options.hunger", true);
         config.set(path + ".options.saturation", true);
+        config.set(path + ".options.pickup-items", false);
         return save(config);
     }
 

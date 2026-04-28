@@ -7,6 +7,7 @@ public record KitOptions(
         boolean showHealthBelowName,
         boolean dropItemsOnKill,
         boolean hunger,
-        boolean saturation
+        boolean saturation,
+        boolean pickupItems
 ) {
 }

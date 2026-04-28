@@ -136,6 +136,7 @@ public final class MenuManager {
 setIfInside(inventory, section.getInt("drops-slot", 16), toggleItem(Material.DROPPER, "&6Drop Items On Kill", kit.options().dropItemsOnKill()));
         setIfInside(inventory, section.getInt("hunger-slot", 19), toggleItem(Material.COOKED_BEEF, "&eHunger", kit.options().hunger()));
         setIfInside(inventory, section.getInt("saturation-slot", 20), toggleItem(Material.GOLDEN_CARROT, "&eSaturation", kit.options().saturation()));
+        setIfInside(inventory, section.getInt("pickup-slot", 21), toggleItem(Material.HOPPER, "&ePickup Items", kit.options().pickupItems()));
         setIfInside(inventory, section.getInt("back-slot", 18), backItem());
         setIfInside(inventory, section.getInt("close-slot", 26), closeItem());
         player.openInventory(inventory);
@@ -279,6 +280,11 @@ if (slot == getSlot("menus.admin-kit-options.drops-slot", 16)) {
                 }
                 if (slot == getSlot("menus.admin-kit-options.saturation-slot", 20)) {
                     plugin.kits().toggleOption(kit.id(), "saturation");
+                    openAdminKitOptions(player, plugin.kits().kit(kit.id()).orElse(kit));
+                    return;
+                }
+                if (slot == getSlot("menus.admin-kit-options.pickup-slot", 21)) {
+                    plugin.kits().toggleOption(kit.id(), "pickup-items");
                     openAdminKitOptions(player, plugin.kits().kit(kit.id()).orElse(kit));
                 }
             }

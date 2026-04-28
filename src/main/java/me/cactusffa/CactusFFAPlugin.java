@@ -306,6 +306,9 @@ public final class CactusFFAPlugin extends JavaPlugin {
             if (!options.contains("drop-items-on-kill")) {
                 options.set("drop-items-on-kill", false);
             }
+            if (!options.contains("pickup-items")) {
+                options.set("pickup-items", false);
+            }
         }
 
         saveYaml(file, current, resourceName);

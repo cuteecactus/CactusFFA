@@ -48,7 +48,14 @@ public final class ProtectionListener implements Listener {
 
     @EventHandler
     public void onPickup(PlayerAttemptPickupItemEvent event) {
-        if (plugin.sessions().isInFfa(event.getPlayer()) && !plugin.getConfig().getBoolean("ffa.protection.item-pickup", false)) {
+        if (!plugin.sessions().isInFfa(event.getPlayer())) {
+            return;
+        }
+        boolean globalPickup = plugin.getConfig().getBoolean("ffa.protection.item-pickup", false);
+        boolean kitPickup = plugin.sessions().currentKit(event.getPlayer())
+                .map(kit -> kit.options().pickupItems())
+                .orElse(false);
+        if (!globalPickup && !kitPickup) {
             event.setCancelled(true);
         }
     }

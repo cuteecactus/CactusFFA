@@ -54,5 +54,8 @@ menus:
     combat-plus-slot: 14
     health-slot: 15
     drops-slot: 16
+    hunger-slot: 19
+    saturation-slot: 20
+    pickup-slot: 21
     back-slot: 18
     close-slot: 26
