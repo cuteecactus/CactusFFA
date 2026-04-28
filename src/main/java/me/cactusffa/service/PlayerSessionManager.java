@@ -45,48 +45,21 @@ public final class PlayerSessionManager {
         }
 
         player.closeInventory();
-        player.getInventory().clear();
-        player.getInventory().setContents(copy(kit.contents()));
-        player.getInventory().setArmorContents(copy(kit.armor()));
-        player.getInventory().setExtraContents(copy(kit.extras()));
-        player.updateInventory();
         player.teleport(arena.spawn());
-        player.setGameMode(GameMode.SURVIVAL);
-        if (plugin.getConfig().getBoolean("ffa.clear-potion-effects-on-join", true)) {
-            for (PotionEffect effect : player.getActivePotionEffects()) {
-                player.removePotionEffect(effect.getType());
-            }
-        }
-        if (plugin.getConfig().getBoolean("ffa.heal-on-join", true)) {
-            double maxHealth = player.getAttribute(Attribute.MAX_HEALTH) == null ? 20.0D : player.getAttribute(Attribute.MAX_HEALTH).getValue();
-            player.setHealth(Math.min(maxHealth, 20.0D));
-        }
-        if (kit.options().hunger() && plugin.getConfig().getBoolean("ffa.feed-on-join", true)) {
-            player.setFoodLevel(20);
-            if (kit.options().saturation()) {
-                player.setSaturation(20.0F);
-            }
-        }
-        plugin.scoreboard().apply(player);
+        plugin.getServer().getScheduler().runTask(plugin, () -> {
+            applyKitState(player, kit);
+            // Re-apply one tick later to beat late inventory mutations from practice/core plugins.
+            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                if (isInFfa(player) && currentKit(player).map(current -> current.id().equalsIgnoreCase(kit.id())).orElse(false)) {
+                    applyKitState(player, kit);
+                }
+            });
+        });
     }
 
     public void rekit(Player player) {
         get(player).ifPresent(session -> plugin.kits().kit(session.currentKitId()).ifPresent(kit -> {
-            player.getInventory().clear();
-            player.getInventory().setContents(copy(kit.contents()));
-            player.getInventory().setArmorContents(copy(kit.armor()));
-            player.getInventory().setExtraContents(copy(kit.extras()));
-            player.updateInventory();
-            if (plugin.getConfig().getBoolean("ffa.heal-on-join", true)) {
-                double maxHealth = player.getAttribute(Attribute.MAX_HEALTH) == null ? 20.0D : player.getAttribute(Attribute.MAX_HEALTH).getValue();
-                player.setHealth(Math.min(maxHealth, 20.0D));
-            }
-            if (kit.options().hunger() && plugin.getConfig().getBoolean("ffa.feed-on-join", true)) {
-                player.setFoodLevel(20);
-                if (kit.options().saturation()) {
-                    player.setSaturation(20.0F);
-                }
-            }
+            applyKitState(player, kit);
         }));
     }
 
@@ -188,5 +161,30 @@ public final class PlayerSessionManager {
             clone[i] = source[i] == null ? null : source[i].clone();
         }
         return clone;
+    }
+
+    private void applyKitState(Player player, KitDefinition kit) {
+        player.getInventory().clear();
+        player.getInventory().setContents(copy(kit.contents()));
+        player.getInventory().setArmorContents(copy(kit.armor()));
+        player.getInventory().setExtraContents(copy(kit.extras()));
+        player.updateInventory();
+        player.setGameMode(GameMode.SURVIVAL);
+        if (plugin.getConfig().getBoolean("ffa.clear-potion-effects-on-join", true)) {
+            for (PotionEffect effect : player.getActivePotionEffects()) {
+                player.removePotionEffect(effect.getType());
+            }
+        }
+        if (plugin.getConfig().getBoolean("ffa.heal-on-join", true)) {
+            double maxHealth = player.getAttribute(Attribute.MAX_HEALTH) == null ? 20.0D : player.getAttribute(Attribute.MAX_HEALTH).getValue();
+            player.setHealth(Math.min(maxHealth, 20.0D));
+        }
+        if (kit.options().hunger() && plugin.getConfig().getBoolean("ffa.feed-on-join", true)) {
+            player.setFoodLevel(20);
+            if (kit.options().saturation()) {
+                player.setSaturation(20.0F);
+            }
+        }
+        plugin.scoreboard().apply(player);
     }
 }
