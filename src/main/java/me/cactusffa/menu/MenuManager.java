@@ -87,7 +87,7 @@ public final class MenuManager {
         setIfInside(inventory, section.getInt("set-arena-slot", 13), new ItemBuilder(Material.RECOVERY_COMPASS).name("&eUpdate Arena Spawn").lore(List.of("&7Command: &f/cacffa arena setspawn <id>", "&7Overwrite an arena location safely.")).hideFlags().build());
         setIfInside(inventory, section.getInt("teleport-arena-slot", 14), new ItemBuilder(Material.ENDER_PEARL).name("&3Teleport To Arena").lore(List.of("&7Command: &f/cacffa arena tp <id>", "&7Quick preview for testing kits.")).hideFlags().build());
         setIfInside(inventory, section.getInt("set-lobby-slot", 15), new ItemBuilder(Material.OAK_DOOR).name("&dSet Main Lobby").lore(List.of("&7Command: &f/cacffa setlobby", "&7Save your current location", "&7as the FFA exit point.")).hideFlags().build());
-        setIfInside(inventory, section.getInt("world-info-slot", 16), new ItemBuilder(Material.GRASS_BLOCK).name("&fArena Placement").lore(List.of("&7Arenas can be created", "&7in any world.", "&7No dedicated FFA world is required.")).hideFlags().build());
+        
         player.openInventory(inventory);
         play(player, "menu-open");
     }

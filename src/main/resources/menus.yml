@@ -30,7 +30,6 @@ menus:
     set-arena-slot: 13
     teleport-arena-slot: 14
     set-lobby-slot: 15
-    world-info-slot: 16
   admin-kits:
     title: "&8[&bKit Studio&8] &0Select Kit"
     size: 54
