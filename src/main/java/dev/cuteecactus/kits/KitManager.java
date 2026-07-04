@@ -1,6 +1,8 @@
 package dev.cuteecactus.kits;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Material;
@@ -79,6 +81,15 @@ public class KitManager {
         
         KitsConfig.get().save(config);
         return true;
+    }
+
+    public Set<String> getAllNames () {
+        Set<String> names = ConcurrentHashMap.newKeySet();
+        kits.forEach((k,v) -> {
+            names.add(k);
+        });
+
+        return names;
     }
 
 }

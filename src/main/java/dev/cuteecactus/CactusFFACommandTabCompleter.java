@@ -1,0 +1,103 @@
+package dev.cuteecactus;
+
+import dev.cuteecactus.kits.KitManager;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+
+
+public class CactusFFACommandTabCompleter implements TabCompleter {
+
+    private static final List<String> ROOT = Arrays.asList("kit", "arena");
+
+    private static final Map<String, List<String>> KIT_SUB = Map.of(
+            "create", List.of("<name>"),
+            "delete", List.of(),
+            "setinv", List.of(),
+            "icon", List.of(),
+            "load", List.of(),
+            "editor", List.of(),
+            "rename", List.of()
+    );
+
+    private static final Map<String, List<String>> ARENA_SUB = Map.of(
+            "create", List.of("<name>"),
+            "delete", List.of(),
+            "setspawn", List.of(),
+            "tp", List.of(),
+            "load", List.of()
+    );
+
+    @Override
+    public @Nullable List<String> onTabComplete(
+            @NotNull CommandSender sender,
+            @NotNull Command command,
+            @NotNull String label,
+            @NotNull String[] args
+    ) {
+
+        if (args.length == 1) {
+            return filter(ROOT, args[0]);
+        }
+
+        String root = args[0].toLowerCase();
+
+        if (args.length == 2) {
+            if (root.equals("kit")) {
+                return filter(KIT_SUB.keySet().stream().toList(), args[1]);
+            }
+            if (root.equals("arena")) {
+                return filter(ARENA_SUB.keySet().stream().toList(), args[1]);
+            }
+            return Collections.emptyList();
+        }
+
+
+        if (args.length == 3) {
+            String sub = args[1].toLowerCase();
+
+            if (root.equals("kit")) {
+                if (sub.equals("create")) {
+                    return List.of("<name>");
+                }
+              if (Arrays.asList("setinv", "icon", "load", "editor", "rename", "delete").contains(sub)) {
+                    return filter(KitManager.get().getAllNames(), args[2]);
+                }
+            }
+
+            if (root.equals("arena")) {
+                if (sub.equals("create")) {
+                    return List.of("<name>");
+                }
+
+                if (Arrays.asList("setspawn", "tp", "load", "delete").contains(sub)) {
+                    
+                    return List.of("<arena>");
+                }
+            }
+        }
+
+        return Collections.emptyList();
+    }
+
+    private List<String> filter(Collection<String> input, String prefix) {
+        List<String> result = new ArrayList<>();
+        for (String s : input) {
+            if (s.toLowerCase().startsWith(prefix.toLowerCase())) {
+                result.add(s);
+            }
+        }
+        return result;
+    }
+}

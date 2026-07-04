@@ -34,6 +34,7 @@ public class CactusFFA extends JavaPlugin {
 
     private void registerCommands() {
         getCommand("cactusffa").setExecutor(new CactusFFACommand());
+        getCommand("cactusffa").setTabCompleter(new CactusFFACommandTabCompleter());;
     }
 
 }
