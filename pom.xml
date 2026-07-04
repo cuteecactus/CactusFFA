@@ -5,11 +5,11 @@
 
     <groupId>dev.cuteecactus</groupId>
     <artifactId>CactusFFA</artifactId>
-    <version>1.0.0</version>
+    <version>dev-2.0.0</version>
     <packaging>jar</packaging>
 
     <name>CactusFFA</name>
-    <description>Production-ready configurable free-for-all plugin.</description>
+    <description>Just a free-for-all plugin</description>
 
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
