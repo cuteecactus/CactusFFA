@@ -3,6 +3,11 @@ prefix: "&8[&aCactusFFA&8] "
 command-usage:
   kit: "&cUsage: /cffa kit <create/delete/setinv/icon>"
   kit-create: "&cUsage: /cffa kit create <name>"
-
+  kit-setinv: "&cUsage: /cffa kit setinv <id>"
+  kit-load: "&cUsage: /cffa kit load <id>"
 admin:
   kit-created: "&aKit created. Edit the ffa gui to display it."
+  kit-not-found: "&aKit with id &a`{kit}` &cwas not found."
+  kit-loaded: "&aLoaded: {kit}"
+  kit-edited: "&aEdited: {kit}"
+  kit-error: "&aError while editing: {kit}"

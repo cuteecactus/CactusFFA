@@ -6,12 +6,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import com.mojang.brigadier.Message;
+
 import dev.cuteecactus.config.MessageConfig;
+import dev.cuteecactus.kits.Kit;
 import dev.cuteecactus.kits.KitManager;
 
 public class CactusFFACommand implements CommandExecutor {
-
-    
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
@@ -55,14 +56,50 @@ public class CactusFFACommand implements CommandExecutor {
                 return;
             }
 
-            player.sendMessage("pro");
-
             String kitId = args[2];
 
             if (KitManager.get().createKit(kitId, player)) {
                 player.sendMessage(MessageConfig.get().getMessage("admin.kit-created"));
             }
             return;
+        }
+        if (action.equalsIgnoreCase("setinv")) {
+            if (args.length != 3) {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.kit-setinv"));
+                return;
+            }
+
+            String kitId = args[2];
+            Kit kit = KitManager.get().getKit(kitId);
+
+            if (kit == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.kit-not-found", "{kit}", kitId));
+                return;
+            }
+
+            if (KitManager.get().setInv(kitId, player.getInventory().getContents())) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.kit-edited", "{kit}", kitId));
+            } else {
+                player.sendMessage(MessageConfig.get().getMessage("admin.kit-error", "{kit}", kitId));
+
+            }
+        }
+        if (action.equalsIgnoreCase("load")) {
+            if (args.length != 3) {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.kit-load"));
+                return;
+            }
+
+            String kitId = args[2];
+            Kit kit = KitManager.get().getKit(kitId);
+
+            if (kit == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.kit-not-found", "{kit}", kitId));
+                return;
+            }
+
+            kit.applyContent(player);
+            player.sendMessage(MessageConfig.get().getMessage("admin.kit-loaded"));
         }
 
     }

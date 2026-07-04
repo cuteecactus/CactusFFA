@@ -31,7 +31,15 @@ public class MessageConfig {
         return ConfigManager.get().save(config, "messages");
     }
 
-    public Component getMessage(String path) {
-        return ColorUtil.color(config.getString("prefix", "&8[&aCactusFFA&8]") + config.getString(path, path) );
+    public Component getMessage(String path, String... replacements) {
+        String prefix = config.getString("prefix", "&8[&aCactusFFA&8] ");
+        String message = config.getString(path, path);
+
+        message = prefix + message;
+        for (int i = 0; i < replacements.length - 1; i += 2) {
+            message = message.replace(replacements[i], replacements[i + 1]);
+        }
+
+        return ColorUtil.color(message);
     }
 }

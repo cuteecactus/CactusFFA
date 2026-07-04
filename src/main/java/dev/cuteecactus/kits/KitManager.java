@@ -1,6 +1,5 @@
 package dev.cuteecactus.kits;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -64,8 +63,9 @@ public class KitManager {
         }
     }
 
-    public boolean createKit (String id, Player player) {
-        if (id == null || player == null || kits.contains(id.toLowerCase())) return false;
+    public boolean createKit(String id, Player player) {
+        if (id == null || player == null || kits.contains(id.toLowerCase()))
+            return false;
 
         Kit kit = new Kit(id);
         kit.setDisplayName(id);
@@ -73,23 +73,47 @@ public class KitManager {
         kit.setEnabled(true);
 
         String path = "kits." + id + ".";
-        
+
         config.set(path + "display-name", kit.getDisplayName());
         config.set(path + "enabled", kit.getEnabled());
         config.set(path + "icon", kit.getIcon().name());
         config.set(path + "content", kit.getContent());
-        
+
         KitsConfig.get().save(config);
         return true;
     }
 
-    public Set<String> getAllNames () {
+    public Set<String> getAllNames() {
         Set<String> names = ConcurrentHashMap.newKeySet();
-        kits.forEach((k,v) -> {
+        kits.forEach((k, v) -> {
             names.add(k);
         });
 
         return names;
+    }
+
+    public Kit getKit(String id) {
+        return kits.get(id);
+    }
+
+    public boolean setInv(String id, ItemStack[] content) {
+        String key = id.toLowerCase();
+
+        if (!kits.containsKey(key))
+            return false;
+
+        String path = "kits." + key + ".";
+
+        Kit kit = getKit(key);
+        kit.setContent(content);
+
+        config.set(path + "content", content);
+
+        KitsConfig.get().save(config);
+
+        kits.put(key, kit);
+
+        return true;
     }
 
 }
