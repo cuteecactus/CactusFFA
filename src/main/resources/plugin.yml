@@ -5,3 +5,14 @@ api-version: "1.21.11"
 authors: [CuteeCactus]
 description: Just a free-for-all plugin
 
+commands:
+  cactusffa:
+    description: Root command
+    usage: /cactusffa
+    aliases: [cffa]
+
+permissions:
+  cactusffa.admin:
+    description: Admin permissions
+    default: op
+  
