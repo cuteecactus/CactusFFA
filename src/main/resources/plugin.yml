@@ -1,6 +1,6 @@
 name: CactusFFA
 version: 1.0.0
-main: me.cactusffa.CactusFFAPlugin
+main: dev.cuteecactus.CactusFFAPlugin
 api-version: "1.21"
 authors: [CuteeCactus]
 description: Configurable free-for-all plugin with arenas, kits, menus, combat isolation, and scoreboard control.
