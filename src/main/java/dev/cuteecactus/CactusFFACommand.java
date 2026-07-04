@@ -6,8 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import com.mojang.brigadier.Message;
-
 import dev.cuteecactus.config.MessageConfig;
 import dev.cuteecactus.kits.Kit;
 import dev.cuteecactus.kits.KitManager;
