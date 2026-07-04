@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 public final class LeaveCommand implements CommandExecutor {
 
-    private final CactusFFAPlugin plugin;
+    private final CactusFFAPlugin plugin; 
 
     public LeaveCommand(CactusFFAPlugin plugin) {
         this.plugin = plugin;

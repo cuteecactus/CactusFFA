@@ -30,6 +30,11 @@
             <version>1.21.11-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+    <groupId>dev.triumphteam</groupId>
+    <artifactId>triumph-gui</artifactId>
+    <version>3.1.13</version>
+</dependency>
     </dependencies>
 
     <build>
@@ -42,6 +47,27 @@
                     <release>${maven.compiler.release}</release>
                 </configuration>
             </plugin>
+            <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-shade-plugin</artifactId>
+    <version>3.6.0</version>
+    <configuration>
+        <relocations>
+            <relocation>
+                <pattern>dev.triumphteam.gui</pattern>
+                <shadedPattern>dev.cuteecactus.libs.triumphgui</shadedPattern> <!-- Replace package here here -->
+            </relocation>
+        </relocations>
+    </configuration>
+    <executions>
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>shade</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
         </plugins>
     </build>
 </project>
