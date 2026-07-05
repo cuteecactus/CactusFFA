@@ -49,4 +49,20 @@ public class ConfigManager {
             return false;
         }
     }
+
+    public FileConfiguration loadProfile(String path) {
+        File file = new File(plugin.getDataFolder(), path + ".yml");
+
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        return YamlConfiguration.loadConfiguration(file);
+    }
 }
