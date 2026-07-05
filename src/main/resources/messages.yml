@@ -6,6 +6,7 @@ command-usage:
   kit-setinv: "&cUsage: /cffa kit setinv <id>"
   kit-load: "&cUsage: /cffa kit load <id>"
   kit-icon: "&cUsage: /cffa kit icon <id> <material>"
+  kit: "&cUsage: /cffa arena <create/delete/corner1/corner2/spawn/rename>"
 admin:
   no-permission: "&cYou do not have permission to use this command."
   kit-created: "&aKit created. Edit the ffa gui to display it."

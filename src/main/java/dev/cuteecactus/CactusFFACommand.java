@@ -133,4 +133,29 @@ public class CactusFFACommand implements CommandExecutor {
         }
 
     }
+
+
+    private void handleArenaCommand (String[] args, Player player) {
+        if (args.length == 1) {
+            player.sendMessage(MessageConfig.get().getMessage("command-usage.arena"));
+            return;
+        }
+
+        String action = args[1];
+
+
+        if (action.equalsIgnoreCase("create")) {
+            if (args.length != 3) {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-create"));
+                return;
+            }
+
+            String kitId = args[2];
+
+            if (KitManager.get().createKit(kitId, player)) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.kit-created"));
+            }
+            return;
+        }
+    }
 }
