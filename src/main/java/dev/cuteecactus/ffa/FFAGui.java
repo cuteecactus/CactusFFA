@@ -1,4 +1,4 @@
-package dev.cuteecactus.gui;
+package dev.cuteecactus.ffa;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;

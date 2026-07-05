@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import dev.cuteecactus.config.MessageConfig;
-import dev.cuteecactus.gui.FFAGui;
 
 public class FFACommand implements CommandExecutor {
 
