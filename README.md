@@ -3,6 +3,12 @@
 
 ## Planed Features
 
+**Admin GUI**
+- [ ] Main Admin GUI
+- [ ] Manage kits gui
+- [ ] Manage arenas gui
+- [ ] Manage server gui
+
 **Kits System**
 - [x] Kits creation
 - [x] Kit load command
