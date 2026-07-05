@@ -115,5 +115,24 @@ public class KitManager {
 
         return true;
     }
+    public boolean setIcon(String id, Material material) {
+        String key = id.toLowerCase();
+
+        if (!kits.containsKey(key))
+            return false;
+
+        String path = "kits." + key + ".";
+
+        Kit kit = getKit(key);
+        kit.setIcon(material);
+
+        config.set(path + "icon", material.name());
+
+        KitsConfig.get().save(config);
+
+        kits.put(key, kit);
+
+        return true;
+    }
 
 }

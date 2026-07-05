@@ -1,5 +1,6 @@
 package dev.cuteecactus;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -102,6 +103,33 @@ public class CactusFFACommand implements CommandExecutor {
 
             kit.applyContent(player);
             player.sendMessage(MessageConfig.get().getMessage("admin.kit-loaded"));
+        }
+
+        if (action.equalsIgnoreCase("icon")) {
+            if (args.length != 4) {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.kit-icon"));
+                return;
+            }
+
+            String kitId = args[2];
+            Kit kit = KitManager.get().getKit(kitId);
+            if (kit == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.kit-not-found", "{kit}", kitId));
+                return;
+            }
+
+            String iconString = args[3];
+            Material icon = Material.matchMaterial(iconString);
+
+            if (icon == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.incorrect-icon"));
+                return;
+            }
+
+
+
+            KitManager.get().setIcon(kitId, icon);
+            player.sendMessage(MessageConfig.get().getMessage("admin.kit-edited"));
         }
 
     }

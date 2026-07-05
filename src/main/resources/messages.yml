@@ -5,6 +5,7 @@ command-usage:
   kit-create: "&cUsage: /cffa kit create <name>"
   kit-setinv: "&cUsage: /cffa kit setinv <id>"
   kit-load: "&cUsage: /cffa kit load <id>"
+  kit-icon: "&cUsage: /cffa kit icon <id> <material>"
 admin:
   no-permission: "&cYou do not have permission to use this command."
   kit-created: "&aKit created. Edit the ffa gui to display it."
@@ -12,3 +13,4 @@ admin:
   kit-loaded: "&aLoaded: {kit}"
   kit-edited: "&aEdited: {kit}"
   kit-error: "&aError while editing: {kit}"
+  kit-incorrect-icon: "&cIncorrect icon material"
