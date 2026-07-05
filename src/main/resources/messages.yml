@@ -27,3 +27,4 @@ admin:
   arena-disabled: "&aArena `{arena}` &cdisabled."
   arena-corner1-set: "&aCorner 1 set to your current position."
   arena-corner2-set: "&aCorner 2 set to your current position."
+  arena-spawn-set: "&aArena spawn set to your current position."

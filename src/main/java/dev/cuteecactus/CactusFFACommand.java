@@ -184,31 +184,6 @@ public class CactusFFACommand implements CommandExecutor {
             }
             return;
         }
-        if (action.equalsIgnoreCase("spawn")) {
-            if (args.length != 4) {
-                player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-spawn"));
-                return;
-            }
-
-            String arenaId = args[2];
-            boolean enable = Boolean.parseBoolean(args[3]);
-            Arena arena = ArenaManager.get().getArena(arenaId);
-
-            if (arena == null) {
-                player.sendMessage(MessageConfig.get().getMessage("admin.arena-not-found", "{arena}", arenaId));
-            }
-
-            if (ArenaManager.get().setEnabled(arenaId, enable)) {
-                if (enable == true
-                        && (arena.getCorner1() == null || arena.getCorner2() == null || arena.getSpawn() == null)) {
-                    player.sendMessage(MessageConfig.get().getMessage("admin.arena-cant-enable"));
-                    return;
-                }
-
-                player.sendMessage(MessageConfig.get().getMessage(enable ? "admin.arena-enabled" : "admin.arena-disabled", "{arena}", arenaId));
-            }
-            return;
-        }
         if (action.equalsIgnoreCase("corner1")) {
             if (args.length != 3) {
                 player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-corner1"));
@@ -248,6 +223,27 @@ public class CactusFFACommand implements CommandExecutor {
                 
 
                 player.sendMessage(MessageConfig.get().getMessage("admin.arena-corner2-set", "{arena}", arenaId));
+            }
+            return;
+        }
+        if (action.equalsIgnoreCase("spawn")) {
+            if (args.length != 3) {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-spawn"));
+                return;
+            }
+
+            String arenaId = args[2];
+            Arena arena = ArenaManager.get().getArena(arenaId);
+            Location location = player.getLocation();
+
+            if (arena == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.arena-not-found", "{arena}", arenaId));
+            }
+
+            if (ArenaManager.get().setSpawn(arenaId, location)) {
+                
+
+                player.sendMessage(MessageConfig.get().getMessage("admin.arena-spawn-set", "{arena}", arenaId));
             }
             return;
         }
