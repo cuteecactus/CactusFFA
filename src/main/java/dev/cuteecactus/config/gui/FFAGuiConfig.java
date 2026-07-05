@@ -10,7 +10,7 @@ public class FFAGuiConfig {
     private static FFAGuiConfig instance;
 
     public FFAGuiConfig() {
-        this.config = ConfigManager.get().load("guis/ffa.yml");
+        this.config = ConfigManager.get().load("guis/ffa");
         instance = this;
     }
 
@@ -23,10 +23,10 @@ public class FFAGuiConfig {
     }
 
     public void reload() {
-        this.config = ConfigManager.get().load("guis/ffa.yml");
+        this.config = ConfigManager.get().load("guis/ffa");
     }
 
     public boolean save(FileConfiguration config) {
-        return ConfigManager.get().save(config, "guis/ffa.yml");
+        return ConfigManager.get().save(config, "guis/ffa");
     }
 }

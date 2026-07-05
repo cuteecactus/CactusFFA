@@ -1,5 +1,5 @@
-ffa-gui
-  title: "&f&uFFA"
+ffa-gui:
+  title: "&f&nFFA"
   rows: 3
   filler:
     name: "&r "

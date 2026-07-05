@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.cuteecactus.CactusFFA;
+import dev.cuteecactus.config.gui.FFAGuiConfig;
 
 public class ConfigManager {
     private final JavaPlugin plugin = CactusFFA.get();
@@ -26,6 +27,7 @@ public class ConfigManager {
         new KitsConfig();
         new MessageConfig();
         new ArenaConfig();
+        new FFAGuiConfig();
     } 
 
     public FileConfiguration load(String name) {

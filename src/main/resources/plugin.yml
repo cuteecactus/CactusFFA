@@ -6,6 +6,9 @@ authors: [CuteeCactus]
 description: Just a free-for-all plugin
 
 commands:
+  ffa:
+    description: Ffa join command
+    usage: /ffa
   cactusffa:
     description: Root command
     usage: /cactusffa
@@ -15,4 +18,7 @@ permissions:
   cactusffa.admin:
     description: Admin permissions
     default: op
+  cactusffa.use:
+    description: Use general ffa commands
+    default: true
   
