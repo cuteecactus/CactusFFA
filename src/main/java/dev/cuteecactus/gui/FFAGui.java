@@ -58,6 +58,8 @@ public class FFAGui {
             .asGuiItem(
                 // TODO: send to ffa arena
             );
+
+            gui.setItem(config.getInt("ffa-gui.kits."+kitId), kitItem);
         }
 
 
