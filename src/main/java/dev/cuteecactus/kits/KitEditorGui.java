@@ -85,59 +85,72 @@ public class KitEditorGui {
 
         gui.setItem(fillerSlots, filler);
 
-
         // Saturation, hunger, drop items, block place, block break
+        boolean saturationRule = kit.getRule("saturation");
         GuiItem saturationItem = ItemBuilder.from(Material.GOLDEN_APPLE)
-        .name(ColorUtil.color("&cAllow Saturation"))
-        .lore(
-            List.of("&7Allow saturation effect")
-            .stream()
-            .map(ColorUtil::color)
-            .toList()
-        )
-        .asGuiItem();
+                .name(ColorUtil.color(saturationRule ? "&aAllow Saturation" : "&cAllow Saturation"))
+                .lore(
+                        List.of("&7Allow saturation effect")
+                                .stream()
+                                .map(ColorUtil::color)
+                                .toList())
+                .asGuiItem(e -> {
+                    KitManager.get().setRule(kit.getId(), "saturation", !saturationRule);
+                    openKitRulesMenu(player, kit);
+                });
 
+        boolean hungerRule = kit.getRule("hunger");
         GuiItem hungerItem = ItemBuilder.from(Material.COOKED_BEEF)
-        .name(ColorUtil.color("&cAllow Hunger"))
-        .lore(
-            List.of("&7Allow hunger effect")
-            .stream()
-            .map(ColorUtil::color)
-            .toList()
-        )
-        .asGuiItem();
+                .name(ColorUtil.color(hungerRule ? "&aAllow Hunger" : "&cAllow Hunger"))
+                .lore(
+                        List.of("&7Allow hunger effect")
+                                .stream()
+                                .map(ColorUtil::color)
+                                .toList())
+                .asGuiItem(e -> {
+                    KitManager.get().setRule(kit.getId(), "hunger", !hungerRule);
+                    openKitRulesMenu(player, kit);
+                });
 
+        boolean dropItemRule = kit.getRule("drop-items");
         GuiItem dropItemsItem = ItemBuilder.from(Material.ELYTRA)
-        .name(ColorUtil.color("&cAllow Hunger"))
-        .lore(
-            List.of("&7Allow droping inventory on player death")
-            .stream()
-            .map(ColorUtil::color)
-            .toList()
-        )
-        .asGuiItem();
+                .name(ColorUtil.color(dropItemRule ? "&aAllow Hunger" : "&cAllow Hunger"))
+                .lore(
+                        List.of("&7Allow droping inventory on player death")
+                                .stream()
+                                .map(ColorUtil::color)
+                                .toList())
+                .asGuiItem(e -> {
+                    KitManager.get().setRule(kit.getId(), "drop-items", !dropItemRule);
+                    openKitRulesMenu(player, kit);
+                });
 
+        boolean breakBlockRule = kit.getRule("break-blocks");
         GuiItem breakBlockItem = ItemBuilder.from(Material.IRON_PICKAXE)
-        .name(ColorUtil.color("&cAllow Breaking Block"))
-        .lore(
-            List.of("&7Allow players to break blocks placed by players")
-            .stream()
-            .map(ColorUtil::color)
-            .toList()
-        )
-        .asGuiItem();
+                .name(ColorUtil.color(breakBlockRule ? "&aAllow Breaking Block" : "&cAllow Breaking Block"))
+                .lore(
+                        List.of("&7Allow players to break blocks placed by players")
+                                .stream()
+                                .map(ColorUtil::color)
+                                .toList())
+                .asGuiItem(e -> {
+                    KitManager.get().setRule(kit.getId(), "break-blocks", !breakBlockRule);
+                    openKitRulesMenu(player, kit);
+                });
 
+        boolean placeBlockRule = kit.getRule("place-blocks");
         GuiItem placeBlockItem = ItemBuilder.from(Material.GRASS_BLOCK)
-        .name(ColorUtil.color("&cAllow Placing Block"))
-        .lore(
-            List.of("&7Allow players to place blocks")
-            .stream()
-            .map(ColorUtil::color)
-            .toList()
-        )
-        .asGuiItem();
-        
-        
+                .name(ColorUtil.color(placeBlockRule ? "&aAllow Placing Block":"&cAllow Placing Block"))
+                .lore(
+                        List.of("&7Allow players to place blocks")
+                                .stream()
+                                .map(ColorUtil::color)
+                                .toList())
+                .asGuiItem(e -> {
+                    KitManager.get().setRule(kit.getId(), "place-blocks", !placeBlockRule);
+                    openKitRulesMenu(player, kit);
+                });
+
         gui.addItem(saturationItem);
         gui.addItem(hungerItem);
         gui.addItem(dropItemsItem);
