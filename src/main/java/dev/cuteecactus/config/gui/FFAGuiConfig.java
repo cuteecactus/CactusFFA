@@ -4,17 +4,17 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import dev.cuteecactus.config.ConfigManager;
 
-public class FFAGui {
+public class FFAGuiConfig {
     private FileConfiguration config;
 
-    private static FFAGui instance;
+    private static FFAGuiConfig instance;
 
-    public FFAGui() {
+    public FFAGuiConfig() {
         this.config = ConfigManager.get().load("guis/ffa.yml");
         instance = this;
     }
 
-    public static FFAGui get () {
+    public static FFAGuiConfig get () {
         return instance;
     }
 

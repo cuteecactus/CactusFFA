@@ -9,6 +9,6 @@ ffa-gui
     name: "&e{kit}"
     lore:
       - "&r"
-      = "&7Click to join the ffa."
+      - "&7Click to join the ffa."
   kits:
     test: 11
