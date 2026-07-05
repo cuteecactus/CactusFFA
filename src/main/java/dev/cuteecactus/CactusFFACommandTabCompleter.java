@@ -10,13 +10,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-
 
 public class CactusFFACommandTabCompleter implements TabCompleter {
 
@@ -29,8 +28,7 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
             "icon", List.of(),
             "load", List.of(),
             "editor", List.of(),
-            "rename", List.of()
-    );
+            "rename", List.of());
 
     private static final Map<String, List<String>> ARENA_SUB = Map.of(
             "create", List.of("<name>"),
@@ -40,16 +38,14 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
             "corner2", List.of(),
             "tp", List.of(),
             "rename", List.of(),
-            "enable", List.of()
-    );
+            "enable", List.of());
 
     @Override
     public @Nullable List<String> onTabComplete(
             @NotNull CommandSender sender,
             @NotNull Command command,
             @NotNull String label,
-            @NotNull String[] args
-    ) {
+            @NotNull String[] args) {
 
         if (args.length == 1) {
             return filter(ROOT, args[0]);
@@ -67,7 +63,6 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
             return Collections.emptyList();
         }
 
-
         if (args.length == 3) {
             String sub = args[1].toLowerCase();
 
@@ -75,7 +70,7 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
                 if (sub.equals("create")) {
                     return List.of("<name>");
                 }
-              if (Arrays.asList("setinv", "icon", "load", "editor", "rename", "delete").contains(sub)) {
+                if (Arrays.asList("setinv", "icon", "load", "editor", "rename", "delete").contains(sub)) {
                     return filter(KitManager.get().getAllNames(), args[2]);
                 }
             }
@@ -85,8 +80,8 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
                     return List.of("<name>");
                 }
 
-                if (Arrays.asList("spawn","corner1","corner2", "tp","delete", "enable", "rename").contains(sub)) {
-                    
+                if (Arrays.asList("spawn", "corner1", "corner2", "tp", "delete", "enable", "rename").contains(sub)) {
+
                     return filter(ArenaManager.get().getAllArenaNames(), args[2]);
                 }
             }
@@ -97,6 +92,14 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
             if (root.equals("kit")) {
                 if (sub.equals("rename")) {
                     return List.of("<name>");
+                }
+                if (sub.equals("icon")) {
+                    Material[] materials = Material.values();
+                    List <String> result = new ArrayList<>();
+                    for (Material material : materials) {
+                        result.add(material.name());
+                    }
+                    return result;
                 }
             }
             if (root.equals("arena")) {
