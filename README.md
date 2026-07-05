@@ -9,6 +9,6 @@
 - [x] Set kits inventory
 - [ ] Kit editor gui
 - [ ] Kit rules
-- [ ] Kit icon command
+- [x] Kit icon command
 
 
