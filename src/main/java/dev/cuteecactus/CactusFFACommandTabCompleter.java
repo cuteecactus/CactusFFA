@@ -39,6 +39,7 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
             "corner1", List.of(),
             "corner2", List.of(),
             "tp", List.of(),
+            "rename", List.of(),
             "enable", List.of()
     );
 
@@ -84,7 +85,7 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
                     return List.of("<name>");
                 }
 
-                if (Arrays.asList("spawn","corner1","corner2", "tp","delete", "enable").contains(sub)) {
+                if (Arrays.asList("spawn","corner1","corner2", "tp","delete", "enable", "rename").contains(sub)) {
                     
                     return filter(ArenaManager.get().getAllArenaNames(), args[2]);
                 }
@@ -96,6 +97,9 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
             if (root.equals("arena")) {
                 if (sub.equals("enable")) {
                     return List.of("true", "false");
+                }
+                if (sub.equals("rename")) {
+                    return List.of("<name>");
                 }
             }
         }

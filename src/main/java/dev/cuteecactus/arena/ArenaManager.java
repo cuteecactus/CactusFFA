@@ -76,9 +76,6 @@ public class ArenaManager {
     }
 
     public boolean rename(String id, String name) {
-        if (!arenas.contains(id))
-            return false;
-
         Arena arena = getArena(id);
 
         if (arena == null)
@@ -119,6 +116,7 @@ public class ArenaManager {
 
         return true;
     }
+
     public boolean setCorner2(String id, Location location) {
         Arena arena = getArena(id);
 
@@ -132,13 +130,15 @@ public class ArenaManager {
 
         return true;
     }
+
     public boolean setEnabled(String id, Boolean enabled) {
         Arena arena = getArena(id);
 
         if (arena == null)
             return false;
 
-        arena.setEnabled(enabled);;
+        arena.setEnabled(enabled);
+        ;
         config.set("arenas." + id + ".enabled", enabled);
         ArenaConfig.get().save(config);
         arenas.put(id, arena);

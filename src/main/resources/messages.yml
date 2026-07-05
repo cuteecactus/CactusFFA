@@ -12,6 +12,7 @@ command-usage:
   arena-spawn: "&cUsage: /cffa arena spawn <id>"
   arena-corner1: "&cUsage: /cffa arena corner1 <id>"
   arena-corner2: "&cUsage: /cffa arena corner2 <id>"
+  arena-rename: "&cUsage: /cffa arena rename <id> <name>"
 admin:
   no-permission: "&cYou do not have permission to use this command."
   kit-created: "&aKit created. Edit the ffa gui to display it."
@@ -28,3 +29,4 @@ admin:
   arena-corner1-set: "&aCorner 1 set to your current position."
   arena-corner2-set: "&aCorner 2 set to your current position."
   arena-spawn-set: "&aArena spawn set to your current position."
+  arena-arena-renamed: "&aRenamed arena&e {arena} &ato&e {name}"

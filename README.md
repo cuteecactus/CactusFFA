@@ -18,6 +18,6 @@
 - [x] Arena corners command
 - [x] Arena spawn command
 - [x] Arena enable command
-- [ ] Arena rename command
+- [x] Arena rename command
 
 

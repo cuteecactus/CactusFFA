@@ -247,5 +247,28 @@ public class CactusFFACommand implements CommandExecutor {
             }
             return;
         }
+        if (action.equalsIgnoreCase("rename")) {
+            if (args.length != 4) {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-rename"));
+                return;
+            }
+
+            String arenaId = args[2];
+            Arena arena = ArenaManager.get().getArena(arenaId);
+            String name = args[3];
+
+            if (arena == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.arena-not-found", "{arena}", arenaId));
+            }
+
+            if (ArenaManager.get().rename(arenaId, name)) {
+                
+
+                player.sendMessage(MessageConfig.get().getMessage("admin.arena-renamed", "{arena}", arenaId, "{name}", name));
+            } else {
+                player.sendMessage("error");
+            }
+            return;
+        }
     }
 }
