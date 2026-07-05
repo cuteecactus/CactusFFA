@@ -25,6 +25,7 @@ public class ConfigManager {
     private void init() {
         new KitsConfig();
         new MessageConfig();
+        new ArenaConfig();
     } 
 
     public FileConfiguration load(String name) {
