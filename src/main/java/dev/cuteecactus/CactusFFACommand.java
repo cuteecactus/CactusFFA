@@ -18,6 +18,10 @@ public class CactusFFACommand implements CommandExecutor {
         if (!(sender instanceof Player player))
             return false;
 
+        if (!player.hasPermission("cactusffa.admin")) {
+            player.sendMessage(MessageConfig.get().getMessage("admin.no-permission"));
+        }
+
         if (args.length == 0) {
             // TODO: admin panel
             return true;

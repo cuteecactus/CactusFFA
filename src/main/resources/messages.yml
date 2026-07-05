@@ -6,6 +6,7 @@ command-usage:
   kit-setinv: "&cUsage: /cffa kit setinv <id>"
   kit-load: "&cUsage: /cffa kit load <id>"
 admin:
+  no-permission: "&cYou do not have permission to use this command."
   kit-created: "&aKit created. Edit the ffa gui to display it."
   kit-not-found: "&aKit with id &a`{kit}` &cwas not found."
   kit-loaded: "&aLoaded: {kit}"
