@@ -80,6 +80,7 @@ public class KitManager {
         config.set(path + "content", kit.getContent());
 
         KitsConfig.get().save(config);
+        kits.put(kit.getId().toLowerCase(), kit);
         return true;
     }
 
@@ -146,6 +147,24 @@ public class KitManager {
         kit.setDisplayName(name);
 
         config.set(path + "name", name);
+        KitsConfig.get().save(config);
+
+        kits.put(key, kit);
+
+        return true;
+    }
+    public boolean setEnable(String id, Boolean enable) {
+        String key = id.toLowerCase();
+
+        if (!kits.containsKey(key))
+            return false;
+
+        String path = "kits." + key + ".";
+
+        Kit kit = getKit(key);
+        kit.setEnabled(enable);
+
+        config.set(path + "enabled", enable);
         KitsConfig.get().save(config);
 
         kits.put(key, kit);

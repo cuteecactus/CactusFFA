@@ -7,6 +7,7 @@ command-usage:
   kit-load: "&cUsage: /cffa kit load <id>"
   kit-icon: "&cUsage: /cffa kit icon <id> <material>"
   kit-rename: "&cUsage: /cffa kit rename <id> <name>"
+  kit-editor: "&cUsage: /cffa kit editor <id>"
   arena: "&cUsage: /cffa arena <create/delete/corner1/corner2/spawn/rename/tp>"
   arena-create: "&cUsage: /cffa arena arena <name>"
   arena-enable: "&cUsage: /cffa arena enable <id> <true/false>"

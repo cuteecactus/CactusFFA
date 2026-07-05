@@ -12,6 +12,7 @@ import dev.cuteecactus.arena.Arena;
 import dev.cuteecactus.arena.ArenaManager;
 import dev.cuteecactus.config.MessageConfig;
 import dev.cuteecactus.kits.Kit;
+import dev.cuteecactus.kits.KitEditorGui;
 import dev.cuteecactus.kits.KitManager;
 
 public class CactusFFACommand implements CommandExecutor {
@@ -153,6 +154,22 @@ public class CactusFFACommand implements CommandExecutor {
             if (KitManager.get().rename(kitId, name)) {
                 player.sendMessage(MessageConfig.get().getMessage("admin.kit-renamed", "{kit}", kitId, "{name}", name));
             }
+            return;
+        }
+        if (action.equalsIgnoreCase("editor")) {
+            if (args.length != 3) {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.kit-editor"));
+                return;
+            }
+
+            String kitId = args[2];
+            Kit kit = KitManager.get().getKit(kitId);
+
+            if (kit == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.kit-not-found", "{kit}", kitId));
+            }
+
+            new KitEditorGui().open(player, kit);
             return;
         }
 
