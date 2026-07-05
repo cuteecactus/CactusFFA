@@ -42,6 +42,12 @@ public class KitManager {
             kit.setEnabled(config.getBoolean(path + "enabled"));
             kit.setIcon(Material.matchMaterial(config.getString(path + "icon")));
 
+            if (config.contains(path+"rules")) {
+                for (String rule : config.getConfigurationSection(path+"rules").getKeys(false)) {
+                    kit.addKitRule(rule, config.getBoolean(path+"rules."+rule));
+                }
+            }
+
             Object raw = config.get(path + "content");
             ItemStack[] content = null;
             if (raw instanceof ItemStack[]) {
