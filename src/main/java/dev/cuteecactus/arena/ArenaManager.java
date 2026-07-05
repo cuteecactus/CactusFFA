@@ -113,7 +113,20 @@ public class ArenaManager {
             return false;
 
         arena.setCorner1(location);
-        config.set("arenas." + id + ".spawn", location);
+        config.set("arenas." + id + ".corner1", location);
+        ArenaConfig.get().save(config);
+        arenas.put(id, arena);
+
+        return true;
+    }
+    public boolean setCorner2(String id, Location location) {
+        Arena arena = getArena(id);
+
+        if (arena == null)
+            return false;
+
+        arena.setCorner2(location);
+        config.set("arenas." + id + ".corner2", location);
         ArenaConfig.get().save(config);
         arenas.put(id, arena);
 

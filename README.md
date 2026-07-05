@@ -15,7 +15,7 @@
 
 **Arena System**
 - [x] Arena creation
-- [ ] Arena corners command
+- [x] Arena corners command
 - [ ] Arena spawn command
 - [x] Arena enable command
 - [ ] Arena rename command

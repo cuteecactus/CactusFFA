@@ -1,5 +1,6 @@
 package dev.cuteecactus;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -205,6 +206,48 @@ public class CactusFFACommand implements CommandExecutor {
                 }
 
                 player.sendMessage(MessageConfig.get().getMessage(enable ? "admin.arena-enabled" : "admin.arena-disabled", "{arena}", arenaId));
+            }
+            return;
+        }
+        if (action.equalsIgnoreCase("corner1")) {
+            if (args.length != 3) {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-corner1"));
+                return;
+            }
+
+            String arenaId = args[2];
+            Arena arena = ArenaManager.get().getArena(arenaId);
+            Location location = player.getLocation();
+
+            if (arena == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.arena-not-found", "{arena}", arenaId));
+            }
+
+            if (ArenaManager.get().setCorner1(arenaId, location)) {
+                
+
+                player.sendMessage(MessageConfig.get().getMessage("admin.arena-corner1-set", "{arena}", arenaId));
+            }
+            return;
+        }
+        if (action.equalsIgnoreCase("corner2")) {
+            if (args.length != 3) {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-corner2"));
+                return;
+            }
+
+            String arenaId = args[2];
+            Arena arena = ArenaManager.get().getArena(arenaId);
+            Location location = player.getLocation();
+
+            if (arena == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.arena-not-found", "{arena}", arenaId));
+            }
+
+            if (ArenaManager.get().setCorner2(arenaId, location)) {
+                
+
+                player.sendMessage(MessageConfig.get().getMessage("admin.arena-corner2-set", "{arena}", arenaId));
             }
             return;
         }
