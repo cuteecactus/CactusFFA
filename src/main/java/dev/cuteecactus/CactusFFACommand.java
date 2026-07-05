@@ -136,6 +136,26 @@ public class CactusFFACommand implements CommandExecutor {
             player.sendMessage(MessageConfig.get().getMessage("admin.kit-edited"));
         }
 
+        if (action.equalsIgnoreCase("rename")) {
+            if (args.length != 4) {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.kit-rename"));
+                return;
+            }
+
+            String kitId = args[2];
+            Kit kit = KitManager.get().getKit(kitId);
+            String name = args[3];
+
+            if (kit == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.kit-not-found", "{kit}", kitId));
+            }
+
+            if (KitManager.get().rename(kitId, name)) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.kit-renamed", "{kit}", kitId, "{name}", name));
+            }
+            return;
+        }
+
     }
 
     private void handleArenaCommand(String[] args, Player player) {
@@ -265,8 +285,6 @@ public class CactusFFACommand implements CommandExecutor {
                 
 
                 player.sendMessage(MessageConfig.get().getMessage("admin.arena-renamed", "{arena}", arenaId, "{name}", name));
-            } else {
-                player.sendMessage("error");
             }
             return;
         }

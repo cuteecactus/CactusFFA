@@ -94,6 +94,11 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
 
         if (args.length == 4) {
             String sub = args[1].toLowerCase();
+            if (root.equals("kit")) {
+                if (sub.equals("rename")) {
+                    return List.of("<name>");
+                }
+            }
             if (root.equals("arena")) {
                 if (sub.equals("enable")) {
                     return List.of("true", "false");

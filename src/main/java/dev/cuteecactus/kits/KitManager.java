@@ -34,7 +34,7 @@ public class KitManager {
             String path = "kits." + key + ".";
             Kit kit = new Kit(key);
 
-            String displayName = config.getString(path + "display-name");
+            String displayName = config.getString(path + "name");
 
             if (displayName == null)
                 displayName = key;
@@ -74,7 +74,7 @@ public class KitManager {
 
         String path = "kits." + id + ".";
 
-        config.set(path + "display-name", kit.getDisplayName());
+        config.set(path + "name", kit.getDisplayName());
         config.set(path + "enabled", kit.getEnabled());
         config.set(path + "icon", kit.getIcon().name());
         config.set(path + "content", kit.getContent());
@@ -128,6 +128,24 @@ public class KitManager {
 
         config.set(path + "icon", material.name());
 
+        KitsConfig.get().save(config);
+
+        kits.put(key, kit);
+
+        return true;
+    }
+    public boolean rename(String id, String name) {
+        String key = id.toLowerCase();
+
+        if (!kits.containsKey(key))
+            return false;
+
+        String path = "kits." + key + ".";
+
+        Kit kit = getKit(key);
+        kit.setDisplayName(name);
+
+        config.set(path + "name", name);
         KitsConfig.get().save(config);
 
         kits.put(key, kit);

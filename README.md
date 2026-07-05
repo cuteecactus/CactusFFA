@@ -17,7 +17,7 @@
 - [ ] Kit rules
 - [x] Kit icon command
 - [ ] Kit breakable blocks
-- [ ] Kit rename command
+- [x] Kit rename command
 
 **Arena System**
 - [x] Arena creation
