@@ -10,5 +10,13 @@
 - [ ] Kit editor gui
 - [ ] Kit rules
 - [x] Kit icon command
+- [ ] Kit breakable blocks
+
+**Arena System**
+- [ ] Arena creation
+- [ ] Arena corners command
+- [ ] Arena spawn command
+- [ ] Arena enable command
+- [ ] Arena rename command
 
 
