@@ -9,6 +9,7 @@ import dev.cuteecactus.utils.ColorUtil;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
+import net.kyori.adventure.text.event.ClickEvent;
 
 public class KitEditorGui {
     public void open(Player player, Kit kit) {
@@ -53,7 +54,10 @@ public class KitEditorGui {
             .map(ColorUtil::color)
             .toList()
         )
-        .asGuiItem();
+        .asGuiItem(e -> {
+            player.closeInventory();
+            sendKitIconPrompt(player, kit.getId());
+        });
 
 
         GuiItem kitRulesItem = ItemBuilder.from(Material.WRITABLE_BOOK)
@@ -67,6 +71,11 @@ public class KitEditorGui {
         gui.open(player);
     } 
 
+
+    void sendKitIconPrompt (Player player, String id) {
+        player.sendMessage(ColorUtil.color("&a&lClick to set kit icon").clickEvent(ClickEvent.suggestCommand("/cffa kit icon "+id+" ")));
+
+    }
 
     GuiItem buildKitToggleItem (Gui gui,Kit kit) {
         Material itemMaterial = kit.getEnabled() ? Material.LIME_CONCRETE : Material.RED_CONCRETE;
