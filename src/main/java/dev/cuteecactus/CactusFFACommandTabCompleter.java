@@ -1,5 +1,6 @@
 package dev.cuteecactus;
 
+import dev.cuteecactus.arena.ArenaManager;
 import dev.cuteecactus.kits.KitManager;
 
 import java.util.ArrayList;
@@ -34,9 +35,11 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
     private static final Map<String, List<String>> ARENA_SUB = Map.of(
             "create", List.of("<name>"),
             "delete", List.of(),
-            "setspawn", List.of(),
+            "spawn", List.of(),
+            "corner1", List.of(),
+            "corner2", List.of(),
             "tp", List.of(),
-            "load", List.of()
+            "enable", List.of()
     );
 
     @Override
@@ -81,9 +84,9 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
                     return List.of("<name>");
                 }
 
-                if (Arrays.asList("setspawn", "tp", "load", "delete").contains(sub)) {
+                if (Arrays.asList("spawn","corner1","corner2", "tp","delete").contains(sub)) {
                     
-                    return List.of("<arena>");
+                    return filter(ArenaManager.get().getAllArenaNames(), args[2]);
                 }
             }
         }

@@ -1,5 +1,6 @@
 package dev.cuteecactus.arena;
 
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Location;
@@ -31,19 +32,18 @@ public class ArenaManager {
                 continue;
 
             path = path + ".";
-            Arena arena = new Arena (id);
+            Arena arena = new Arena(id);
             arena.setName(config.getString(path + "name"));
-            arena.setCorner1(config.getLocation(path+"corner1"));
-            arena.setCorner2(config.getLocation(path+"corner2"));
-            arena.setSpawn(config.getLocation(path+"spawn"));
-            arena.setEnabled(config.getBoolean(path+"enabled"));
-
+            arena.setCorner1(config.getLocation(path + "corner1"));
+            arena.setCorner2(config.getLocation(path + "corner2"));
+            arena.setSpawn(config.getLocation(path + "spawn"));
+            arena.setEnabled(config.getBoolean(path + "enabled"));
 
             arenas.put(id.toLowerCase(), arena);
         }
     }
 
-    public boolean createArena (String id) {
+    public boolean createArena(String id) {
         if (arenas.contains(id)) {
             return false;
         }
@@ -58,61 +58,87 @@ public class ArenaManager {
 
         String path = "arenas." + id + ".";
 
-        config.set(path+"name", arena.getName());
-        config.set(path+"enabled", arena.isEnabled());
-        config.set(path+"spawn", arena.getSpawn());
-        config.set(path+"corner1", arena.getCorner1());
-        config.set(path+"corner2", arena.getCorner2());
-        
+        config.set(path + "name", arena.getName());
+        config.set(path + "enabled", arena.isEnabled());
+        config.set(path + "spawn", arena.getSpawn());
+        config.set(path + "corner1", arena.getCorner1());
+        config.set(path + "corner2", arena.getCorner2());
+
         ArenaConfig.get().save(config);
 
         arenas.put(arena.getId().toLowerCase(), arena);
-        
+
         return true;
     }
-    
-    public Arena getArena (String id) {
+
+    public Arena getArena(String id) {
         return arenas.getOrDefault(id, null);
     }
-    
 
-    public boolean rename (String id, String name) {
-        if (!arenas.contains(id)) return false;
+    public boolean rename(String id, String name) {
+        if (!arenas.contains(id))
+            return false;
 
         Arena arena = getArena(id);
 
-        if (arena == null) return false;
+        if (arena == null)
+            return false;
 
         arena.setName(name);
-        config.set("arenas." + id +".name", name);
+        config.set("arenas." + id + ".name", name);
         ArenaConfig.get().save(config);
         arenas.put(id, arena);
-        
+
         return true;
     }
 
-    public boolean setSpawn (String id, Location location) {
+    public boolean setSpawn(String id, Location location) {
         Arena arena = getArena(id);
 
-        if (arena == null) return false;
-        
+        if (arena == null)
+            return false;
+
         arena.setSpawn(location);
-        config.set("arenas."+id+".spawn", location);
+        config.set("arenas." + id + ".spawn", location);
         ArenaConfig.get().save(config);
         arenas.put(id, arena);
-        
+
         return true;
     }
-    public boolean setCorner1 (String id, Location location) {
+
+    public boolean setCorner1(String id, Location location) {
         Arena arena = getArena(id);
 
-        if (arena == null) return false;
-        
+        if (arena == null)
+            return false;
+
         arena.setCorner1(location);
-        config.set("arenas."+id+".spawn", location);
+        config.set("arenas." + id + ".spawn", location);
         ArenaConfig.get().save(config);
         arenas.put(id, arena);
-        
+
         return true;
+    }
+    public boolean setEnabled(String id, Boolean enabled) {
+        Arena arena = getArena(id);
+
+        if (arena == null)
+            return false;
+
+        arena.setEnabled(enabled);;
+        config.set("arenas." + id + ".enabled", enabled);
+        ArenaConfig.get().save(config);
+        arenas.put(id, arena);
+
+        return true;
+    }
+
+    public Set<String> getAllArenaNames() {
+        Set<String> names = ConcurrentHashMap.newKeySet();
+        arenas.forEach((k, v) -> {
+            names.add(k);
+        });
+
+        return names;
     }
 }

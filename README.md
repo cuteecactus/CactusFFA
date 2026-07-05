@@ -13,10 +13,10 @@
 - [ ] Kit breakable blocks
 
 **Arena System**
-- [ ] Arena creation
+- [x] Arena creation
 - [ ] Arena corners command
 - [ ] Arena spawn command
-- [ ] Arena enable command
+- [x] Arena enable command
 - [ ] Arena rename command
 
 

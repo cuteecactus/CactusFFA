@@ -2,6 +2,7 @@ package dev.cuteecactus;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import dev.cuteecactus.arena.ArenaManager;
 import dev.cuteecactus.config.ConfigManager;
 import dev.cuteecactus.kits.KitManager;
 
@@ -23,6 +24,7 @@ public class CactusFFA extends JavaPlugin {
 
         new ConfigManager();
         new KitManager();
+        new ArenaManager();
 
         getLogger().info("Plugin Enabled");
     }

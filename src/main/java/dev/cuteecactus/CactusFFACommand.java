@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import dev.cuteecactus.arena.Arena;
+import dev.cuteecactus.arena.ArenaManager;
 import dev.cuteecactus.config.MessageConfig;
 import dev.cuteecactus.kits.Kit;
 import dev.cuteecactus.kits.KitManager;
@@ -35,6 +37,9 @@ public class CactusFFACommand implements CommandExecutor {
         switch (subCommand) {
             case "kit":
                 handleKitsCommand(args, player);
+                break;
+            case "arena":
+                handleArenaCommand(args, player);
                 break;
             default:
                 // TODO: send help
@@ -126,16 +131,13 @@ public class CactusFFACommand implements CommandExecutor {
                 return;
             }
 
-
-
             KitManager.get().setIcon(kitId, icon);
             player.sendMessage(MessageConfig.get().getMessage("admin.kit-edited"));
         }
 
     }
 
-
-    private void handleArenaCommand (String[] args, Player player) {
+    private void handleArenaCommand(String[] args, Player player) {
         if (args.length == 1) {
             player.sendMessage(MessageConfig.get().getMessage("command-usage.arena"));
             return;
@@ -143,17 +145,66 @@ public class CactusFFACommand implements CommandExecutor {
 
         String action = args[1];
 
-
         if (action.equalsIgnoreCase("create")) {
             if (args.length != 3) {
                 player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-create"));
                 return;
             }
 
-            String kitId = args[2];
+            String arenaId = args[2];
 
-            if (KitManager.get().createKit(kitId, player)) {
-                player.sendMessage(MessageConfig.get().getMessage("admin.kit-created"));
+            if (ArenaManager.get().createArena(arenaId)) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.arena-created"));
+            }
+            return;
+        }
+        if (action.equalsIgnoreCase("enable")) {
+            if (args.length != 4) {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-enable"));
+                return;
+            }
+
+            String arenaId = args[2];
+            boolean enable = Boolean.parseBoolean(args[3]);
+            Arena arena = ArenaManager.get().getArena(arenaId);
+
+            if (arena == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.arena-not-found", "{arena}", arenaId));
+            }
+
+            if (ArenaManager.get().setEnabled(arenaId, enable)) {
+                if (enable == true
+                        && (arena.getCorner1() == null || arena.getCorner2() == null || arena.getSpawn() == null)) {
+                    player.sendMessage(MessageConfig.get().getMessage("admin.arena-cant-enable"));
+                    return;
+                }
+
+                player.sendMessage(MessageConfig.get().getMessage(enable ? "admin.arena-enabled" : "admin.arena-disabled"));
+            }
+            return;
+        }
+        if (action.equalsIgnoreCase("spawn")) {
+            if (args.length != 4) {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-spawn"));
+                return;
+            }
+
+            String arenaId = args[2];
+            boolean enable = Boolean.parseBoolean(args[3]);
+            Arena arena = ArenaManager.get().getArena(arenaId);
+
+            if (arena == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.arena-not-found", "{arena}", arenaId));
+            }
+
+            if (ArenaManager.get().setEnabled(arenaId, enable)) {
+                if (enable == true
+                        && (arena.getCorner1() == null || arena.getCorner2() == null || arena.getSpawn() == null)) {
+                    player.sendMessage(MessageConfig.get().getMessage("admin.arena-cant-enable"));
+                    return;
+                }
+
+                player.sendMessage(MessageConfig.get().getMessage(enable ? "admin.arena-enabled" : "admin.arena-disabled"));
             }
             return;
         }
