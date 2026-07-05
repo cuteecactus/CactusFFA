@@ -1,6 +1,7 @@
 package dev.cuteecactus.arena;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class Arena {
     private final String id;
@@ -10,7 +11,7 @@ public class Arena {
     private Location corner2;
     private Location spawn;
 
-    public Arena (String id) {
+    public Arena(String id) {
         this.id = id;
     }
 
@@ -56,5 +57,11 @@ public class Arena {
 
     public void setSpawn(Location spawn) {
         this.spawn = spawn;
+    }
+
+    public boolean tp(Player player) {
+        if (spawn == null) return false;
+        player.teleport(spawn);
+        return true;
     }
 }

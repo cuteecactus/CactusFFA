@@ -200,7 +200,8 @@ public class CactusFFACommand implements CommandExecutor {
                     return;
                 }
 
-                player.sendMessage(MessageConfig.get().getMessage(enable ? "admin.arena-enabled" : "admin.arena-disabled"));
+                player.sendMessage(
+                        MessageConfig.get().getMessage(enable ? "admin.arena-enabled" : "admin.arena-disabled"));
             }
             return;
         }
@@ -219,7 +220,6 @@ public class CactusFFACommand implements CommandExecutor {
             }
 
             if (ArenaManager.get().setCorner1(arenaId, location)) {
-                
 
                 player.sendMessage(MessageConfig.get().getMessage("admin.arena-corner1-set", "{arena}", arenaId));
             }
@@ -240,7 +240,6 @@ public class CactusFFACommand implements CommandExecutor {
             }
 
             if (ArenaManager.get().setCorner2(arenaId, location)) {
-                
 
                 player.sendMessage(MessageConfig.get().getMessage("admin.arena-corner2-set", "{arena}", arenaId));
             }
@@ -261,7 +260,6 @@ public class CactusFFACommand implements CommandExecutor {
             }
 
             if (ArenaManager.get().setSpawn(arenaId, location)) {
-                
 
                 player.sendMessage(MessageConfig.get().getMessage("admin.arena-spawn-set", "{arena}", arenaId));
             }
@@ -282,9 +280,29 @@ public class CactusFFACommand implements CommandExecutor {
             }
 
             if (ArenaManager.get().rename(arenaId, name)) {
-                
 
-                player.sendMessage(MessageConfig.get().getMessage("admin.arena-renamed", "{arena}", arenaId, "{name}", name));
+                player.sendMessage(
+                        MessageConfig.get().getMessage("admin.arena-renamed", "{arena}", arenaId, "{name}", name));
+            }
+            return;
+        }
+        if (action.equalsIgnoreCase("tp")) {
+            if (args.length != 3) {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-tp"));
+                return;
+            }
+
+            String arenaId = args[2];
+            Arena arena = ArenaManager.get().getArena(arenaId);
+
+            if (arena == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.arena-not-found", "{arena}", arenaId));
+            }
+
+            if (arena.tp(player)) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.arena-tped", "{arena}", arenaId));
+            } else {
+                player.sendMessage(MessageConfig.get().getMessage("admin.arena-error-teleporting", "{arena}", arenaId));
             }
             return;
         }

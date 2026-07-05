@@ -25,6 +25,6 @@
 - [x] Arena spawn command
 - [x] Arena enable command
 - [x] Arena rename command
-- [ ] Arena rename command
+- [x] Arena tp command
 
 
