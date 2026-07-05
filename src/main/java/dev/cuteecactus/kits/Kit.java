@@ -1,11 +1,15 @@
 package dev.cuteecactus.kits;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Kit {
     private final String id;
+    private final ConcurrentHashMap<String, Boolean> kitRules = new ConcurrentHashMap<>();
+    
     private String displayName;
     private ItemStack[] content;
     private boolean enabled = true;
@@ -54,6 +58,18 @@ public class Kit {
 
     public String getId() {
         return id;
+    }
+
+    public ConcurrentHashMap<String, Boolean> getKitRules() {
+        return kitRules;
+    }
+
+    public void addKitRule (String rule, boolean enable) {
+        kitRules.put(rule, enable);
+    }
+
+    public boolean getRule (String rule) {
+        return kitRules.getOrDefault(rule, false);
     }
 
 }

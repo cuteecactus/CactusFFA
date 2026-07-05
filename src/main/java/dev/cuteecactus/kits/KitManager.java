@@ -172,4 +172,23 @@ public class KitManager {
         return true;
     }
 
+    public boolean setRule (String id, String rule, boolean enable) {
+        String key = id.toLowerCase();
+
+        if (!kits.containsKey(key))
+            return false;
+
+        String path = "kits." + key + ".";
+
+        Kit kit = getKit(key);
+        kit.addKitRule(rule, enable);
+
+        config.set(path + "rules."+rule, enable);
+        KitsConfig.get().save(config);
+
+        kits.put(key, kit);
+
+        return true;
+    }
+
 }
