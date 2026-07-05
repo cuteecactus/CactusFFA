@@ -10,7 +10,7 @@ public class Arena {
     private Location corner2;
     private Location spawn;
 
-    private Arena (String id) {
+    public Arena (String id) {
         this.id = id;
     }
 
