@@ -204,7 +204,7 @@ public class CactusFFACommand implements CommandExecutor {
                     return;
                 }
 
-                player.sendMessage(MessageConfig.get().getMessage(enable ? "admin.arena-enabled" : "admin.arena-disabled"));
+                player.sendMessage(MessageConfig.get().getMessage(enable ? "admin.arena-enabled" : "admin.arena-disabled", "{arena}", arenaId));
             }
             return;
         }
