@@ -13,7 +13,7 @@
 - [x] Kits creation
 - [x] Kit load command
 - [x] Set kits inventory
-- [ ] Kit editor gui
+- [ ] Admin kit editor gui
 - [ ] Kit rules
 - [x] Kit icon command
 - [ ] Kit breakable blocks
@@ -26,5 +26,6 @@
 - [x] Arena enable command
 - [x] Arena rename command
 - [x] Arena tp command
+- [ ] Arena cleanup system (remove extra blocks)
 
 
