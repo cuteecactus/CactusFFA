@@ -37,12 +37,15 @@ public class CactusFFACommand implements CommandExecutor {
             return false;
 
         switch (subCommand) {
+            // /cffa kit
             case "kit":
                 handleKitsCommand(args, player);
                 break;
+            // /cffa arena
             case "arena":
                 handleArenaCommand(args, player);
                 break;
+            // /cffa *
             default:
                 // TODO: send help
                 break;
@@ -59,7 +62,7 @@ public class CactusFFACommand implements CommandExecutor {
         }
 
         String action = args[1];
-
+        // /cffa kit create <id>
         if (action.equalsIgnoreCase("create")) {
             if (args.length != 3) {
                 player.sendMessage(MessageConfig.get().getMessage("command-usage.kit-create"));
@@ -73,6 +76,7 @@ public class CactusFFACommand implements CommandExecutor {
             }
             return;
         }
+        // /cffa kit setinv <id>
         if (action.equalsIgnoreCase("setinv")) {
             if (args.length != 3) {
                 player.sendMessage(MessageConfig.get().getMessage("command-usage.kit-setinv"));
@@ -94,6 +98,7 @@ public class CactusFFACommand implements CommandExecutor {
 
             }
         }
+        // /cffa kit load <id>
         if (action.equalsIgnoreCase("load")) {
             if (args.length != 3) {
                 player.sendMessage(MessageConfig.get().getMessage("command-usage.kit-load"));
@@ -112,6 +117,7 @@ public class CactusFFACommand implements CommandExecutor {
             player.sendMessage(MessageConfig.get().getMessage("admin.kit-loaded"));
         }
 
+        // /cffa kit icon <id> <material>
         if (action.equalsIgnoreCase("icon")) {
             if (args.length != 4) {
                 player.sendMessage(MessageConfig.get().getMessage("command-usage.kit-icon"));
@@ -137,6 +143,7 @@ public class CactusFFACommand implements CommandExecutor {
             player.sendMessage(MessageConfig.get().getMessage("admin.kit-edited"));
         }
 
+        // /cffa kit rename <id> <new name>
         if (action.equalsIgnoreCase("rename")) {
             if (args.length != 4) {
                 player.sendMessage(MessageConfig.get().getMessage("command-usage.kit-rename"));
@@ -156,6 +163,8 @@ public class CactusFFACommand implements CommandExecutor {
             }
             return;
         }
+
+        // /cffa kit editor <id>
         if (action.equalsIgnoreCase("editor")) {
             if (args.length != 3) {
                 player.sendMessage(MessageConfig.get().getMessage("command-usage.kit-editor"));
@@ -183,6 +192,7 @@ public class CactusFFACommand implements CommandExecutor {
 
         String action = args[1];
 
+        // /cffa arena create <id>
         if (action.equalsIgnoreCase("create")) {
             if (args.length != 3) {
                 player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-create"));
@@ -196,6 +206,8 @@ public class CactusFFACommand implements CommandExecutor {
             }
             return;
         }
+
+        // /cffa arena enable <id> <true/false>
         if (action.equalsIgnoreCase("enable")) {
             if (args.length != 4) {
                 player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-enable"));
@@ -222,6 +234,8 @@ public class CactusFFACommand implements CommandExecutor {
             }
             return;
         }
+
+        // /cffa arena corner1 <id>
         if (action.equalsIgnoreCase("corner1")) {
             if (args.length != 3) {
                 player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-corner1"));
@@ -242,6 +256,8 @@ public class CactusFFACommand implements CommandExecutor {
             }
             return;
         }
+
+        // /cffa arena corner2 <id>
         if (action.equalsIgnoreCase("corner2")) {
             if (args.length != 3) {
                 player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-corner2"));
@@ -262,6 +278,8 @@ public class CactusFFACommand implements CommandExecutor {
             }
             return;
         }
+
+        // /cffa arena spawn <id>
         if (action.equalsIgnoreCase("spawn")) {
             if (args.length != 3) {
                 player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-spawn"));
@@ -282,6 +300,8 @@ public class CactusFFACommand implements CommandExecutor {
             }
             return;
         }
+
+        // /cffa arena rename <id> <new name>
         if (action.equalsIgnoreCase("rename")) {
             if (args.length != 4) {
                 player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-rename"));
@@ -303,6 +323,8 @@ public class CactusFFACommand implements CommandExecutor {
             }
             return;
         }
+
+        // /cffa arena tp <id>        
         if (action.equalsIgnoreCase("tp")) {
             if (args.length != 3) {
                 player.sendMessage(MessageConfig.get().getMessage("command-usage.arena-tp"));
