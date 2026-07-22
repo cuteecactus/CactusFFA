@@ -14,7 +14,7 @@
 - [x] Kit load command
 - [x] Set kits inventory
 - [ ] Admin Kit editor gui
-- [ ] Kit rules
+- [ ] Kit rules [Lobby on death, Saturation, Hunger, Block Placement, Block Breaking [Player Placed Blocks, Whitelisted, All, None], Adventure Mode, ...]
 - [x] Kit icon command
 - [ ] Kit breakable blocks
 - [x] Kit rename command
@@ -28,4 +28,7 @@
 - [x] Arena tp command
 - [ ] Arena cleanup system (remove extra blocks)
 
-
+**Processes**
+- [x] /ffa gui
+- [ ] Join FFA
+- [ ] Leave FFA
