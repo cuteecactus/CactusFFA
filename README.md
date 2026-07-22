@@ -14,7 +14,7 @@
 - [x] Kit load command
 - [x] Set kits inventory
 - [ ] Admin Kit editor gui [W.I.P]
-- [ ] Kit rules [Lobby on death, Saturation, Hunger, Block Placement, Block Breaking [Player Placed Blocks, Whitelisted, All, None], Adventure Mode, ...]
+- [ ] Kit rules [Lobby on death, Saturation, Hunger, Block Placement, Block Breaking ...]
 - [x] Kit icon command
 - [ ] Kit breakable blocks
 - [x] Kit rename command
