@@ -150,7 +150,22 @@ public class KitEditorGui {
                     KitManager.get().setRule(kit.getId(), "place-blocks", !placeBlockRule);
                     openKitRulesMenu(player, kit);
                 });
+        
+        boolean lobbyOnDeathRule = kit.getRule("death-lobby");
+        GuiItem lobbyOnDeathItem = ItemBuilder.from(Material.ENDER_PEARL)
+                .name(ColorUtil.color(placeBlockRule ? "&aLobby On Death":"&cLobby On Death"))
+                .lore(
+                        List.of("&7Teleport players to lobby on death")
+                                .stream()
+                                .map(ColorUtil::color)
+                                .toList())
+                .asGuiItem(e -> {
+                    KitManager.get().setRule(kit.getId(), "death-lobby", !lobbyOnDeathRule);
+                    openKitRulesMenu(player, kit);
+                });
+        
 
+        gui.addItem(lobbyOnDeathItem);
         gui.addItem(saturationItem);
         gui.addItem(hungerItem);
         gui.addItem(dropItemsItem);
