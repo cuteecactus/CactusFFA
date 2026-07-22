@@ -13,7 +13,7 @@
 - [x] Kits creation
 - [x] Kit load command
 - [x] Set kits inventory
-- [ ] Kit editor gui
+- [ ] Admin Kit editor gui
 - [ ] Kit rules
 - [x] Kit icon command
 - [ ] Kit breakable blocks
