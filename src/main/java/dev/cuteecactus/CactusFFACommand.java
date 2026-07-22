@@ -14,17 +14,21 @@ import dev.cuteecactus.config.MessageConfig;
 import dev.cuteecactus.kits.Kit;
 import dev.cuteecactus.kits.KitEditorGui;
 import dev.cuteecactus.kits.KitManager;
+import dev.cuteecactus.utils.ColorUtil;
 
 public class CactusFFACommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
             @NotNull String @NotNull [] args) {
-        if (!(sender instanceof Player player))
-            return false;
-
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(ColorUtil.color("&cOnly players can use this command"));
+            return true;
+        }
+        
         if (!player.hasPermission("cactusffa.admin")) {
             player.sendMessage(MessageConfig.get().getMessage("admin.no-permission"));
+            return true;
         }
 
         if (args.length == 0) {
@@ -34,7 +38,7 @@ public class CactusFFACommand implements CommandExecutor {
 
         String subCommand = args[0].toLowerCase();
         if (subCommand == null)
-            return false;
+            return true;
 
         switch (subCommand) {
             // /cffa kit
