@@ -1,4 +1,4 @@
-# CactusFFA v2
+# CactusFFA v2 [![CodeFactor](https://www.codefactor.io/repository/github/cuteecactus/cactusffa/badge)](https://www.codefactor.io/repository/github/cuteecactus/cactusffa)
 
 
 ## Planed Features
@@ -26,5 +26,6 @@
 - [x] Arena enable command
 - [x] Arena rename command
 - [x] Arena tp command
+- [ ] Arena cleanup system (remove extra blocks)
 
 
