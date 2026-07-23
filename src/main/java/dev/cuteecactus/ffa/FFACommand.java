@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import dev.cuteecactus.config.MessageConfig;
+import dev.cuteecactus.profile.ProfileManager;
+import dev.cuteecactus.profile.ProfileState;
 
 public class FFACommand implements CommandExecutor {
 
@@ -14,12 +16,18 @@ public class FFACommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
             @NotNull String @NotNull [] args) {
 
-        if (!(sender instanceof Player player)) return false; 
+        if (!(sender instanceof Player player)) return true; 
 
         if (!player.hasPermission("cactusffa.use")) {
             player.sendMessage(MessageConfig.get().getMessage("admin.no-permission"));
-            return false;
+            return true;
         }
+
+        if (ProfileManager.get().getProfile(player.getUniqueId()).getProfileState() == ProfileState.IN_FFA) {
+            player.sendMessage(MessageConfig.get().getMessage("errors.cant-use"));
+            return true;
+        }
+
                         
         new FFAGui().open(player);
         return true;

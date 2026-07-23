@@ -44,3 +44,4 @@ admin:
 
 errors:
   no-arena: "&cNo arena found for that specific kit!"
+  cant-use: "&cYou can not use that command right now!"
