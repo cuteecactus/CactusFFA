@@ -3,13 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.cactusffa</groupId>
+    <groupId>dev.cuteecactus</groupId>
     <artifactId>CactusFFA</artifactId>
-    <version>1.0.0</version>
+    <version>dev-2.0.0</version>
     <packaging>jar</packaging>
 
     <name>CactusFFA</name>
-    <description>Production-ready configurable free-for-all plugin.</description>
+    <description>Just a free-for-all plugin</description>
 
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
@@ -30,6 +30,11 @@
             <version>1.21.11-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+    <groupId>dev.triumphteam</groupId>
+    <artifactId>triumph-gui</artifactId>
+    <version>3.1.13</version>
+</dependency>
     </dependencies>
 
     <build>
@@ -42,6 +47,27 @@
                     <release>${maven.compiler.release}</release>
                 </configuration>
             </plugin>
+            <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-shade-plugin</artifactId>
+    <version>3.6.0</version>
+    <configuration>
+        <relocations>
+            <relocation>
+                <pattern>dev.triumphteam.gui</pattern>
+                <shadedPattern>dev.cuteecactus.libs.triumphgui</shadedPattern> <!-- Replace package here here -->
+            </relocation>
+        </relocations>
+    </configuration>
+    <executions>
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>shade</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
         </plugins>
     </build>
 </project>

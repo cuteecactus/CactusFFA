@@ -1,0 +1,30 @@
+name: CactusFFA
+version: dev-v2.0.0
+main: dev.cuteecactus.CactusFFA
+api-version: "1.21.11"
+authors: [CuteeCactus]
+description: Just a free-for-all plugin
+
+commands:
+  ffa:
+    description: Ffa join command
+    usage: /ffa
+  lobby:
+    description: Teleport to lobby
+    usage: /lobby 
+  leaveffa:
+    description: Leave ffa
+    usage: /leaveffa
+  cactusffa:
+    description: Root command
+    usage: /cactusffa
+    aliases: [cffa]
+
+permissions:
+  cactusffa.admin:
+    description: Admin permissions
+    default: op
+  cactusffa.use:
+    description: Use general ffa commands
+    default: true
+  
