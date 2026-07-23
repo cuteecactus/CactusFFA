@@ -3,6 +3,8 @@ package dev.cuteecactus.profile;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.bukkit.entity.Player;
+
 public class ProfileManager {
     private static ProfileManager instance;
 
@@ -26,5 +28,8 @@ public class ProfileManager {
 
     public Profile getProfile (UUID uuid) {
         return profiles.getOrDefault(uuid, null);
+    }
+    public Profile getProfile (Player player) {
+        return profiles.getOrDefault(player.getUniqueId(), null);
     }
 }

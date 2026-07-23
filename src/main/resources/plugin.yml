@@ -12,6 +12,9 @@ commands:
   lobby:
     description: Teleport to lobby
     usage: /lobby 
+  leaveffa:
+    description: Leave ffa
+    usage: /leaveffa
   cactusffa:
     description: Root command
     usage: /cactusffa

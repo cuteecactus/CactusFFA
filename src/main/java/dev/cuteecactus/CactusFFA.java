@@ -8,6 +8,7 @@ import dev.cuteecactus.arena.ArenaManager;
 import dev.cuteecactus.config.BaseConfig;
 import dev.cuteecactus.config.ConfigManager;
 import dev.cuteecactus.ffa.FFACommand;
+import dev.cuteecactus.ffa.LeaveCommand;
 import dev.cuteecactus.kits.KitManager;
 import dev.cuteecactus.listeners.BlockBreakListener;
 import dev.cuteecactus.listeners.BlockPlaceListener;
@@ -60,6 +61,7 @@ public class CactusFFA extends JavaPlugin {
         getCommand("cactusffa").setTabCompleter(new CactusFFACommandTabCompleter());;
 
         getCommand("ffa").setExecutor(new FFACommand());
+        getCommand("leaveffa").setExecutor(new LeaveCommand()); 
 
         if (BaseConfig.get().getConfig().getBoolean("lobby-command") == true) {
             getCommand("lobby").setExecutor(new LobbyCommand());
