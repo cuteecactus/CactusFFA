@@ -7,6 +7,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import dev.cuteecactus.arena.Arena;
+
 public class Kit {
     private final String id;
     private final ConcurrentHashMap<String, Boolean> kitRules = new ConcurrentHashMap<>();
@@ -16,6 +18,7 @@ public class Kit {
     private boolean enabled = true;
     private Material icon = Material.IRON_SWORD;
     private Set <Material> breakableBlocks = ConcurrentHashMap.newKeySet();
+    private Arena arena;
     
     public Kit(String id) {
         this.id = id;
@@ -87,6 +90,13 @@ public class Kit {
     }
     public void removeBreakableBlock (Material material) {
         this.breakableBlocks.remove(material);
+    }
+
+    public void setArena(Arena arena) {
+        this.arena = arena;
+    }
+    public Arena getArena() {
+        return arena;
     }
 
 }

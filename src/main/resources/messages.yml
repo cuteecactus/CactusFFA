@@ -41,3 +41,6 @@ admin:
   arena-renamed: "&aRenamed arena&e {arena} &ato&e {name}"
   arena-tped: "&aTeleported to the spawn point of {arena}"
   arena-error-teleporting: "&cError while teleporting to the spawn point of {arena}. Check if the spawn point exists &7(/cffa arena spawn <id>)"
+
+errors:
+  no-arena: "&cNo arena found for that specific kit!"
