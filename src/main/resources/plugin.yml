@@ -1,5 +1,5 @@
 name: CactusFFA
-version: dev-v2.0.0
+version: 2.0.0
 main: dev.cuteecactus.CactusFFA
 api-version: "1.21.11"
 authors: [CuteeCactus]
