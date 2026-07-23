@@ -7,7 +7,6 @@
 - [ ] Main Admin GUI
 - [ ] Manage kits gui
 - [ ] Manage arenas gui
-- [ ] Manage server gui
 
 **Kits System**
 - [x] Kits creation
