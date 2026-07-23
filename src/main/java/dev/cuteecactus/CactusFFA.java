@@ -10,6 +10,7 @@ import dev.cuteecactus.ffa.FFACommand;
 import dev.cuteecactus.kits.KitManager;
 import dev.cuteecactus.listeners.JoinListener;
 import dev.cuteecactus.listeners.LeaveListener;
+import dev.cuteecactus.listeners.RegainHealthListener;
 import dev.cuteecactus.profile.ProfileManager;
 
 public class CactusFFA extends JavaPlugin {
@@ -56,6 +57,7 @@ public class CactusFFA extends JavaPlugin {
     private void registerListeners () {
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new LeaveListener(), this);
+        getServer().getPluginManager().registerEvents(new RegainHealthListener(), this);
     }
 
 }

@@ -88,9 +88,9 @@ public class KitEditorGui {
         // Saturation, hunger, drop items, block place, block break
         boolean saturationRule = kit.getRule("saturation");
         GuiItem saturationItem = ItemBuilder.from(Material.GOLDEN_APPLE)
-                .name(ColorUtil.color(saturationRule ? "&aAllow Saturation" : "&cAllow Saturation"))
+                .name(ColorUtil.color(saturationRule ? "&aDisable Saturation" : "&cDisable Saturation"))
                 .lore(
-                        List.of("&7Allow saturation effect")
+                        List.of("&7Disable health regen due to saturation")
                                 .stream()
                                 .map(ColorUtil::color)
                                 .toList())
