@@ -30,4 +30,4 @@
 **Processes**
 - [x] /ffa gui
 - [x] Join FFA
-- [ ] Leave FFA
+- [x] Leave FFA
