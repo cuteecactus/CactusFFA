@@ -25,7 +25,7 @@
 - [x] Arena enable command
 - [x] Arena rename command
 - [x] Arena tp command
-- [ ] Arena cleanup system (remove extra blocks)
+- [x] Arena cleanup system (remove extra blocks)
 
 **Processes**
 - [x] /ffa gui
