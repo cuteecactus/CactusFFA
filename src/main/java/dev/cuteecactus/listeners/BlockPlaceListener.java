@@ -11,7 +11,7 @@ import dev.cuteecactus.profile.ProfileManager;
 
 public class BlockPlaceListener implements Listener{
     @EventHandler
-    private void onBlockPlace (BlockPlaceEvent e) {
+    public void onBlockPlace (BlockPlaceEvent e) {
         Player player = e.getPlayer();
 
         Profile profile = ProfileManager.get().getProfile(player.getUniqueId());

@@ -11,7 +11,7 @@ import dev.cuteecactus.profile.ProfileManager;
 
 public class BlockBreakListener implements Listener {
     @EventHandler
-    private void onBlockBreak (BlockBreakEvent e) {
+    public void onBlockBreak (BlockBreakEvent e) {
         Player player = e.getPlayer();
 
         Profile profile = ProfileManager.get().getProfile(player.getUniqueId());
