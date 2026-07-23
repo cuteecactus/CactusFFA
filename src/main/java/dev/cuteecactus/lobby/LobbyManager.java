@@ -69,7 +69,8 @@ public class LobbyManager {
         List<String> leaveCommands = config.getStringList("ffa-leave-commands");
         try {
             leaveCommands.forEach(command -> {
-                player.performCommand(command);
+                String result = command.replace("{player}", player.getName());
+                player.performCommand(result);
             });
         } finally {
             player.setOp(wasOP);
