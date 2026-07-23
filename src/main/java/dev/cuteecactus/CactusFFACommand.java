@@ -14,6 +14,7 @@ import dev.cuteecactus.config.MessageConfig;
 import dev.cuteecactus.kits.Kit;
 import dev.cuteecactus.kits.KitEditorGui;
 import dev.cuteecactus.kits.KitManager;
+import dev.cuteecactus.lobby.LobbyManager;
 import dev.cuteecactus.utils.ColorUtil;
 
 public class CactusFFACommand implements CommandExecutor {
@@ -49,6 +50,9 @@ public class CactusFFACommand implements CommandExecutor {
             case "arena":
                 handleArenaCommand(args, player);
                 break;
+            // /cffa lobby
+            case "setlobby":
+                LobbyManager.get().setLobby(player.getLocation());
             // /cffa *
             default:
                 // TODO: send help

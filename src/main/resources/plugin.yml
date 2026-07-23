@@ -9,6 +9,9 @@ commands:
   ffa:
     description: Ffa join command
     usage: /ffa
+  lobby:
+    description: Teleport to lobby
+    usage: /lobby 
   cactusffa:
     description: Root command
     usage: /cactusffa
