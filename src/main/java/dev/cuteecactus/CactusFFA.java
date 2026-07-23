@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import dev.cuteecactus.arena.ArenaCleanupManager;
 import dev.cuteecactus.arena.ArenaManager;
 import dev.cuteecactus.config.BaseConfig;
 import dev.cuteecactus.config.ConfigManager;
@@ -35,14 +36,16 @@ public class CactusFFA extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        registerCommands();
-        registerListeners();
-        
         new ConfigManager();
+        new BaseConfig();
         new KitManager();
         new ArenaManager();
         new ProfileManager();
         new LobbyManager();
+        new ArenaCleanupManager();
+
+        registerCommands();
+        registerListeners();
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             ProfileManager.get().addProfile(player.getUniqueId());
@@ -53,6 +56,9 @@ public class CactusFFA extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (ArenaCleanupManager.get() != null) {
+            ArenaCleanupManager.get().stop();
+        }
         getLogger().info("Plugin Disabled");
     }
 

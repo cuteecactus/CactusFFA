@@ -6,3 +6,7 @@ lobby-command: true
 # DO NOT include `/` in command
 # Placeholders: {player} - player name
 ffa-leave-commands: []
+
+# Arena cleanup duration in minutes. All blocks placed/broken in arenas
+# will be restored after this time. Set to 0 to disable.
+cleanup-duration: 30

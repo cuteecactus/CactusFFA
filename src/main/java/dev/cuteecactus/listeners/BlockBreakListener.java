@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
+import dev.cuteecactus.arena.ArenaCleanupManager;
 import dev.cuteecactus.kits.Kit;
 import dev.cuteecactus.profile.Profile;
 import dev.cuteecactus.profile.ProfileManager;
@@ -19,19 +20,18 @@ public class BlockBreakListener implements Listener {
         Kit kit = profile.getCurrentKit();
 
         if (kit == null) return;
-
-
+        
         if (!kit.getBreakableBlocks().isEmpty() && !kit.getBreakableBlocks().contains(e.getBlock().getType())) {
             e.setCancelled(true);
             return;
         }
-
+        
         if (kit.getRule("break-blocks") == false) {
             e.setCancelled(true);
             return;
         }
+        ArenaCleanupManager.get().trackBlockChange(e.getBlock().getLocation(), e.getBlock().getState());
 
-        
     }
     
 }
