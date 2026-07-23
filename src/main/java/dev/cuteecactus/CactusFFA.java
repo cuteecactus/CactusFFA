@@ -8,6 +8,7 @@ import dev.cuteecactus.arena.ArenaManager;
 import dev.cuteecactus.config.ConfigManager;
 import dev.cuteecactus.ffa.FFACommand;
 import dev.cuteecactus.kits.KitManager;
+import dev.cuteecactus.listeners.FoodLevelChangeListener;
 import dev.cuteecactus.listeners.JoinListener;
 import dev.cuteecactus.listeners.LeaveListener;
 import dev.cuteecactus.listeners.RegainHealthListener;
@@ -58,6 +59,7 @@ public class CactusFFA extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new LeaveListener(), this);
         getServer().getPluginManager().registerEvents(new RegainHealthListener(), this);
+        getServer().getPluginManager().registerEvents(new FoodLevelChangeListener(), this);
     }
 
 }

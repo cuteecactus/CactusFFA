@@ -101,9 +101,9 @@ public class KitEditorGui {
 
         boolean hungerRule = kit.getRule("hunger");
         GuiItem hungerItem = ItemBuilder.from(Material.COOKED_BEEF)
-                .name(ColorUtil.color(hungerRule ? "&aAllow Hunger" : "&cAllow Hunger"))
+                .name(ColorUtil.color(hungerRule ? "&aDiable Hunger" : "&cDisable Hunger"))
                 .lore(
-                        List.of("&7Allow hunger effect")
+                        List.of("&7Disable player hunger")
                                 .stream()
                                 .map(ColorUtil::color)
                                 .toList())
