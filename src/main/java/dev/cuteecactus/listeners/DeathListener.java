@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import dev.cuteecactus.kits.Kit;
+import dev.cuteecactus.lobby.LobbyManager;
 import dev.cuteecactus.profile.Profile;
 import dev.cuteecactus.profile.ProfileManager;
 
@@ -21,8 +22,14 @@ public class DeathListener implements Listener {
 
 
         // Prevent Item drop 
-        if (kit.getRule("drop-items")) {
+        if (kit.getRule("drop-items") == false) {
             e.getDrops().clear();
+        }
+
+        if (kit.getRule("death-lobby") == true) {
+            LobbyManager.get().load(player);
+        } else {
+            // TODO: Respawn
         }
     }
     
