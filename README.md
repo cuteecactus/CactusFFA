@@ -29,5 +29,5 @@
 
 **Processes**
 - [x] /ffa gui
-- [ ] Join FFA
+- [x] Join FFA
 - [ ] Leave FFA
