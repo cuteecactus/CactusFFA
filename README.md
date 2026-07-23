@@ -1,6 +1,6 @@
 # CactusFFA
 
-A free-for-all (FFA) plugin for Paper 1.21. Players select a kit from a GUI, get teleported to an arena, and fight. Supports per-kit rules, block tracking with auto-cleanup, and a full admin command suite.
+A free-for-all (FFA) plugin for Paper 1.21. Built for practice servers
 
 ## Features
 
