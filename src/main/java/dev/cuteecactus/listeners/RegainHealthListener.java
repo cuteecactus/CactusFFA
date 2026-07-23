@@ -16,6 +16,7 @@ public class RegainHealthListener implements Listener {
     public void onHealthRegain (EntityRegainHealthEvent e) {
         if (!(e.getEntity() instanceof Player player)) return;
         Profile profile = ProfileManager.get().getProfile(player.getUniqueId());
+        if (profile == null) return;
         if (profile.getProfileState() != ProfileState.IN_FFA) return;
 
         Kit kit = profile.getCurrentKit();

@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class CactusFFACommandTabCompleter implements TabCompleter {
 
-    private static final List<String> ROOT = Arrays.asList("kit", "arena", "lobby");
+    private static final List<String> ROOT = Arrays.asList("kit", "arena", "setlobby");
 
     private static final Map<String, List<String>> KIT_SUB = Map.of(
             "create", List.of("<name>"),

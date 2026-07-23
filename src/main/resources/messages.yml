@@ -11,7 +11,7 @@ command-usage:
   kit-breakableblocks: "&cUsage: /cffa kit breakableblocks <id> <add/remove/list> [material]"
   kit-arena: "&cUsage: /cffa kit arena <id> <arena/none>"
   arena: "&cUsage: /cffa arena <create/delete/corner1/corner2/spawn/rename/tp>"
-  arena-create: "&cUsage: /cffa arena arena <name>"
+  arena-create: "&cUsage: /cffa arena create <name>"
   arena-enable: "&cUsage: /cffa arena enable <id> <true/false>"
   arena-spawn: "&cUsage: /cffa arena spawn <id>"
   arena-corner1: "&cUsage: /cffa arena corner1 <id>"

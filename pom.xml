@@ -55,7 +55,7 @@
         <relocations>
             <relocation>
                 <pattern>dev.triumphteam.gui</pattern>
-                <shadedPattern>dev.cuteecactus.libs.triumphgui</shadedPattern> <!-- Replace package here here -->
+                <shadedPattern>dev.cuteecactus.libs.triumphgui</shadedPattern> <!-- Replace package here -->
             </relocation>
         </relocations>
     </configuration>

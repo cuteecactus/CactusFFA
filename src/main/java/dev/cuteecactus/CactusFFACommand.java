@@ -55,6 +55,7 @@ public class CactusFFACommand implements CommandExecutor {
             // /cffa lobby
             case "setlobby":
                 LobbyManager.get().setLobby(player.getLocation());
+                break;
             // /cffa *
             default:
                 // TODO: send help
@@ -145,7 +146,7 @@ public class CactusFFACommand implements CommandExecutor {
             Material icon = Material.matchMaterial(iconString);
 
             if (icon == null) {
-                player.sendMessage(MessageConfig.get().getMessage("admin.incorrect-icon"));
+                player.sendMessage(MessageConfig.get().getMessage("admin.kit-incorrect-icon"));
                 return;
             }
 
@@ -166,6 +167,7 @@ public class CactusFFACommand implements CommandExecutor {
 
             if (kit == null) {
                 player.sendMessage(MessageConfig.get().getMessage("admin.kit-not-found", "{kit}", kitId));
+                return;
             }
 
             if (KitManager.get().rename(kitId, name)) {
@@ -186,6 +188,7 @@ public class CactusFFACommand implements CommandExecutor {
 
             if (kit == null) {
                 player.sendMessage(MessageConfig.get().getMessage("admin.kit-not-found", "{kit}", kitId));
+                return;
             }
 
             new KitEditorGui().open(player, kit);
@@ -229,7 +232,7 @@ public class CactusFFACommand implements CommandExecutor {
 
             Material material = Material.matchMaterial(args[4]);
             if (material == null) {
-                player.sendMessage(MessageConfig.get().getMessage("admin.incorrect-icon"));
+                player.sendMessage(MessageConfig.get().getMessage("admin.kit-incorrect-icon"));
                 return;
             }
 
@@ -318,6 +321,7 @@ public class CactusFFACommand implements CommandExecutor {
 
             if (arena == null) {
                 player.sendMessage(MessageConfig.get().getMessage("admin.arena-not-found", "{arena}", arenaId));
+                return;
             }
 
             if (ArenaManager.get().setEnabled(arenaId, enable)) {
@@ -328,7 +332,7 @@ public class CactusFFACommand implements CommandExecutor {
                 }
 
                 player.sendMessage(
-                        MessageConfig.get().getMessage(enable ? "admin.arena-enabled" : "admin.arena-disabled"));
+                        MessageConfig.get().getMessage(enable ? "admin.arena-enabled" : "admin.arena-disabled", "{arena}", arenaId));
             }
             return;
         }
@@ -346,6 +350,7 @@ public class CactusFFACommand implements CommandExecutor {
 
             if (arena == null) {
                 player.sendMessage(MessageConfig.get().getMessage("admin.arena-not-found", "{arena}", arenaId));
+                return;
             }
 
             if (ArenaManager.get().setCorner1(arenaId, location)) {
@@ -368,6 +373,7 @@ public class CactusFFACommand implements CommandExecutor {
 
             if (arena == null) {
                 player.sendMessage(MessageConfig.get().getMessage("admin.arena-not-found", "{arena}", arenaId));
+                return;
             }
 
             if (ArenaManager.get().setCorner2(arenaId, location)) {
@@ -390,6 +396,7 @@ public class CactusFFACommand implements CommandExecutor {
 
             if (arena == null) {
                 player.sendMessage(MessageConfig.get().getMessage("admin.arena-not-found", "{arena}", arenaId));
+                return;
             }
 
             if (ArenaManager.get().setSpawn(arenaId, location)) {
@@ -412,6 +419,7 @@ public class CactusFFACommand implements CommandExecutor {
 
             if (arena == null) {
                 player.sendMessage(MessageConfig.get().getMessage("admin.arena-not-found", "{arena}", arenaId));
+                return;
             }
 
             if (ArenaManager.get().rename(arenaId, name)) {
@@ -434,6 +442,7 @@ public class CactusFFACommand implements CommandExecutor {
 
             if (arena == null) {
                 player.sendMessage(MessageConfig.get().getMessage("admin.arena-not-found", "{arena}", arenaId));
+                return;
             }
 
             if (arena.tp(player)) {

@@ -42,6 +42,9 @@ public class DeathListener implements Listener {
         if (arena != null && arena.getSpawn() != null) {
             player.teleport(arena.getSpawn());
         }
+        player.setHealth(20);
+        player.setFoodLevel(20);
+        player.getActivePotionEffects().clear();
         player.getInventory().setContents(kit.getContent());
         // });
     }

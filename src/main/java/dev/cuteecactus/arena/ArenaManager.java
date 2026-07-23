@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import dev.cuteecactus.config.ArenaConfig;
@@ -25,7 +26,9 @@ public class ArenaManager {
     }
 
     private void loadArenas() {
-        for (String id : config.getConfigurationSection("arenas").getKeys(false)) {
+        ConfigurationSection section = config.getConfigurationSection("arenas");
+        if (section == null) return;
+        for (String id : section.getKeys(false)) {
             String path = "arenas." + id;
 
             if (!config.contains(path))
@@ -44,7 +47,7 @@ public class ArenaManager {
     }
 
     public boolean createArena(String id) {
-        if (arenas.contains(id)) {
+        if (arenas.containsKey(id.toLowerCase())) {
             return false;
         }
 
@@ -72,7 +75,7 @@ public class ArenaManager {
     }
 
     public Arena getArena(String id) {
-        return arenas.getOrDefault(id, null);
+        return arenas.getOrDefault(id.toLowerCase(), null);
     }
 
     public boolean rename(String id, String name) {

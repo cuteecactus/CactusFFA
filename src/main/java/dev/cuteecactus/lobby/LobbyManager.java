@@ -2,6 +2,7 @@ package dev.cuteecactus.lobby;
 
 import java.util.List;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -44,8 +45,9 @@ public class LobbyManager {
     }
 
     public void setLobby(Location location) {
-        config.getLocation("lobby");
         lobbyLocation = location;
+        config.set("lobby", location);
+        BaseConfig.get().save(config);
     }
 
     public Location getLobby() {
@@ -62,6 +64,7 @@ public class LobbyManager {
         player.setFoodLevel(20);
         player.setHealth(20);
 
+        player.setGameMode(GameMode.SURVIVAL);
         player.teleport(lobbyLocation);
 
         boolean wasOP = player.isOp();

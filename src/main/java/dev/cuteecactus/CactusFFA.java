@@ -9,6 +9,7 @@ import dev.cuteecactus.arena.ArenaManager;
 import dev.cuteecactus.config.BaseConfig;
 import dev.cuteecactus.config.ConfigManager;
 import dev.cuteecactus.ffa.FFACommand;
+import dev.cuteecactus.ffa.FFAManager;
 import dev.cuteecactus.ffa.LeaveCommand;
 import dev.cuteecactus.kits.KitManager;
 import dev.cuteecactus.listeners.BlockBreakListener;
@@ -43,6 +44,7 @@ public class CactusFFA extends JavaPlugin {
         new ProfileManager();
         new LobbyManager();
         new ArenaCleanupManager();
+        new FFAManager();
 
         registerCommands();
         registerListeners();

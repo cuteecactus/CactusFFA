@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -32,7 +33,9 @@ public class KitManager {
     }
 
     private void init() {
-        for (String key : config.getConfigurationSection("kits").getKeys(false)) {
+        ConfigurationSection section = config.getConfigurationSection("kits");
+        if (section == null) return;
+        for (String key : section.getKeys(false)) {
             String path = "kits." + key + ".";
             Kit kit = new Kit(key);
 
@@ -74,7 +77,7 @@ public class KitManager {
             if (content == null) {
                 CactusFFA.get().getLogger()
                         .warning("Kit " + key + " has invalid or empty items, skipping.");
-                return;
+                continue;
             }
 
             kit.setContent(content);
@@ -84,7 +87,7 @@ public class KitManager {
     }
 
     public boolean createKit(String id, Player player) {
-        if (id == null || player == null || kits.contains(id.toLowerCase()))
+        if (id == null || player == null || kits.containsKey(id.toLowerCase()))
             return false;
 
         Kit kit = new Kit(id);
@@ -114,7 +117,7 @@ public class KitManager {
     }
 
     public Kit getKit(String id) {
-        return kits.get(id);
+        return kits.get(id.toLowerCase());
     }
 
     public boolean setInv(String id, ItemStack[] content) {
