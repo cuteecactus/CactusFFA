@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import dev.cuteecactus.CactusFFA;
+import dev.cuteecactus.arena.Arena;
+import dev.cuteecactus.arena.ArenaManager;
 import dev.cuteecactus.config.KitsConfig;
 
 public class KitManager {
@@ -53,6 +55,11 @@ public class KitManager {
                     Material mat = Material.matchMaterial(block);
                     if (mat != null) kit.addBreakableBlock(mat);
                 }
+            }
+
+            String arenaId = config.getString(path + "arena");
+            if (arenaId != null) {
+                kit.setArena(ArenaManager.get().getArena(arenaId));
             }
 
             Object raw = config.get(path + "content");
@@ -180,6 +187,21 @@ public class KitManager {
         config.set(path + "enabled", enable);
         KitsConfig.get().save(config);
 
+        kits.put(key, kit);
+
+        return true;
+    }
+
+    public boolean setArena(String id, Arena arena) {
+        String key = id.toLowerCase();
+        if (!kits.containsKey(key)) return false;
+
+        Kit kit = getKit(key);
+        kit.setArena(arena);
+
+        String path = "kits." + key + ".";
+        config.set(path + "arena", arena != null ? arena.getId() : null);
+        KitsConfig.get().save(config);
         kits.put(key, kit);
 
         return true;

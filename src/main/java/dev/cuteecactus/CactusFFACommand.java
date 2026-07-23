@@ -247,6 +247,39 @@ public class CactusFFACommand implements CommandExecutor {
             return;
         }
 
+        // /cffa kit arena <id> <arena>
+        if (action.equalsIgnoreCase("arena")) {
+            if (args.length != 4) {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.kit-arena"));
+                return;
+            }
+
+            String kitId = args[2];
+            Kit kit = KitManager.get().getKit(kitId);
+
+            if (kit == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.kit-not-found", "{kit}", kitId));
+                return;
+            }
+
+            if (args[3].equalsIgnoreCase("none")) {
+                KitManager.get().setArena(kitId, null);
+                player.sendMessage(MessageConfig.get().getMessage("admin.kit-arena-cleared", "{kit}", kitId));
+                return;
+            }
+
+            Arena arena = ArenaManager.get().getArena(args[3]);
+
+            if (arena == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.arena-not-found", "{arena}", args[3]));
+                return;
+            }
+
+            KitManager.get().setArena(kitId, arena);
+            player.sendMessage(MessageConfig.get().getMessage("admin.kit-arena-set", "{kit}", kitId, "{arena}", arena.getId()));
+            return;
+        }
+
     }
 
     private void handleArenaCommand(String[] args, Player player) {

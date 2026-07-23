@@ -30,7 +30,8 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
             "load", List.of(),
             "editor", List.of(),
             "rename", List.of(),
-            "breakableblocks", List.of());
+            "breakableblocks", List.of(),
+            "arena", List.of());
 
     private static final Map<String, List<String>> ARENA_SUB = Map.of(
             "create", List.of("<name>"),
@@ -72,7 +73,7 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
                 if (sub.equals("create")) {
                     return List.of("<name>");
                 }
-                if (Arrays.asList("setinv", "icon", "load", "editor", "rename", "delete", "breakableblocks").contains(sub)) {
+                if (Arrays.asList("setinv", "icon", "load", "editor", "rename", "delete", "breakableblocks", "arena").contains(sub)) {
                     return filter(KitManager.get().getAllNames(), args[2]);
                 }
             }
@@ -105,6 +106,11 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
                 }
                 if (sub.equals("breakableblocks")) {
                     return List.of("add", "remove", "list");
+                }
+                if (sub.equals("arena")) {
+                    List<String> arenaNames = new ArrayList<>(ArenaManager.get().getAllArenaNames());
+                    arenaNames.add("none");
+                    return arenaNames;
                 }
             }
             if (root.equals("arena")) {

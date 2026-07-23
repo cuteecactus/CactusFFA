@@ -38,8 +38,8 @@ public class CactusFFA extends JavaPlugin {
     public void onEnable() {
         new ConfigManager();
         new BaseConfig();
-        new KitManager();
         new ArenaManager();
+        new KitManager();
         new ProfileManager();
         new LobbyManager();
         new ArenaCleanupManager();
