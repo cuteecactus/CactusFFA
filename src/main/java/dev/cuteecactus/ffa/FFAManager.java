@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import dev.cuteecactus.arena.Arena;
 import dev.cuteecactus.config.MessageConfig;
 import dev.cuteecactus.kits.Kit;
-import dev.cuteecactus.kits.KitManager;
 import dev.cuteecactus.lobby.LobbyManager;
 import dev.cuteecactus.profile.Profile;
 import dev.cuteecactus.profile.ProfileManager;
