@@ -114,7 +114,7 @@ public class KitEditorGui {
 
         boolean dropItemRule = kit.getRule("drop-items");
         GuiItem dropItemsItem = ItemBuilder.from(Material.ELYTRA)
-                .name(ColorUtil.color(dropItemRule ? "&aAllow Hunger" : "&cAllow Hunger"))
+                .name(ColorUtil.color(dropItemRule ? "&aDrop Items" : "&cDrop Items"))
                 .lore(
                         List.of("&7Allow droping inventory on player death")
                                 .stream()
