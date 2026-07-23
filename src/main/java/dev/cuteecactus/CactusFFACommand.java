@@ -1,5 +1,7 @@
 package dev.cuteecactus;
 
+import java.util.Set;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -187,6 +189,61 @@ public class CactusFFACommand implements CommandExecutor {
             }
 
             new KitEditorGui().open(player, kit);
+            return;
+        }
+
+        // /cffa kit breakableblocks <id> <add/remove/list> [material]
+        if (action.equalsIgnoreCase("breakableblocks")) {
+            if (args.length < 4) {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.kit-breakableblocks"));
+                return;
+            }
+
+            String kitId = args[2];
+            Kit kit = KitManager.get().getKit(kitId);
+
+            if (kit == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.kit-not-found", "{kit}", kitId));
+                return;
+            }
+
+            if (args[3].equalsIgnoreCase("list")) {
+                Set<Material> blocks = kit.getBreakableBlocks();
+                if (blocks.isEmpty()) {
+                    player.sendMessage(MessageConfig.get().getMessage("admin.kit-breakableblocks-empty", "{kit}", kitId));
+                } else {
+                    String blockList = blocks.stream()
+                            .map(Material::name)
+                            .reduce((a, b) -> a + "&a, &e" + b)
+                            .orElse("");
+                    player.sendMessage(MessageConfig.get().getMessage("admin.kit-breakableblocks-list",
+                            "{kit}", kitId, "{blocks}", blockList));
+                }
+                return;
+            }
+
+            if (args.length != 5) {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.kit-breakableblocks"));
+                return;
+            }
+
+            Material material = Material.matchMaterial(args[4]);
+            if (material == null) {
+                player.sendMessage(MessageConfig.get().getMessage("admin.incorrect-icon"));
+                return;
+            }
+
+            if (args[3].equalsIgnoreCase("add")) {
+                KitManager.get().addBreakableBlock(kitId, material);
+                player.sendMessage(MessageConfig.get().getMessage("admin.kit-breakableblock-added",
+                        "{kit}", kitId, "{block}", material.name()));
+            } else if (args[3].equalsIgnoreCase("remove")) {
+                KitManager.get().removeBreakableBlock(kitId, material);
+                player.sendMessage(MessageConfig.get().getMessage("admin.kit-breakableblock-removed",
+                        "{kit}", kitId, "{block}", material.name()));
+            } else {
+                player.sendMessage(MessageConfig.get().getMessage("command-usage.kit-breakableblocks"));
+            }
             return;
         }
 

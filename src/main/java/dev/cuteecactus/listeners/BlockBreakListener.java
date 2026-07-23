@@ -20,10 +20,18 @@ public class BlockBreakListener implements Listener {
 
         if (kit == null) return;
 
-        // TODO: handle whitelisted blocks
+
+        if (!kit.getBreakableBlocks().isEmpty() && !kit.getBreakableBlocks().contains(e.getBlock().getType())) {
+            e.setCancelled(true);
+            return;
+        }
 
         if (kit.getRule("break-blocks") == false) {
             e.setCancelled(true);
-        } 
+            return;
+        }
+
+        
     }
+    
 }

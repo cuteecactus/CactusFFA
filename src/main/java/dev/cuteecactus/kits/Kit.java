@@ -1,5 +1,6 @@
 package dev.cuteecactus.kits;
 
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Material;
@@ -14,7 +15,8 @@ public class Kit {
     private ItemStack[] content;
     private boolean enabled = true;
     private Material icon = Material.IRON_SWORD;
-
+    private Set <Material> breakableBlocks = ConcurrentHashMap.newKeySet();
+    
     public Kit(String id) {
         this.id = id;
     }
@@ -70,6 +72,21 @@ public class Kit {
 
     public boolean getRule (String rule) {
         return kitRules.getOrDefault(rule, false);
+    }
+
+    public Set<Material> getBreakableBlocks() {
+        return breakableBlocks;
+    }
+    
+    public void setBreakableBlocks(Set<Material> breakableBlocks) {
+        this.breakableBlocks = breakableBlocks;
+    }
+
+    public void addBreakableBlock (Material material) {
+        this.breakableBlocks.add(material);
+    }
+    public void removeBreakableBlock (Material material) {
+        this.breakableBlocks.remove(material);
     }
 
 }

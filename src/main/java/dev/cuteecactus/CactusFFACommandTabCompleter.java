@@ -1,6 +1,7 @@
 package dev.cuteecactus;
 
 import dev.cuteecactus.arena.ArenaManager;
+import dev.cuteecactus.kits.Kit;
 import dev.cuteecactus.kits.KitManager;
 
 import java.util.ArrayList;
@@ -28,7 +29,8 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
             "icon", List.of(),
             "load", List.of(),
             "editor", List.of(),
-            "rename", List.of());
+            "rename", List.of(),
+            "breakableblocks", List.of());
 
     private static final Map<String, List<String>> ARENA_SUB = Map.of(
             "create", List.of("<name>"),
@@ -70,7 +72,7 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
                 if (sub.equals("create")) {
                     return List.of("<name>");
                 }
-                if (Arrays.asList("setinv", "icon", "load", "editor", "rename", "delete").contains(sub)) {
+                if (Arrays.asList("setinv", "icon", "load", "editor", "rename", "delete", "breakableblocks").contains(sub)) {
                     return filter(KitManager.get().getAllNames(), args[2]);
                 }
             }
@@ -101,6 +103,9 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
                     }
                     return result;
                 }
+                if (sub.equals("breakableblocks")) {
+                    return List.of("add", "remove", "list");
+                }
             }
             if (root.equals("arena")) {
                 if (sub.equals("enable")) {
@@ -108,6 +113,27 @@ public class CactusFFACommandTabCompleter implements TabCompleter {
                 }
                 if (sub.equals("rename")) {
                     return List.of("<name>");
+                }
+            }
+        }
+
+        if (args.length == 5) {
+            String sub = args[1].toLowerCase();
+            if (root.equals("kit") && sub.equals("breakableblocks")) {
+                String kitId = args[2];
+                Kit kit = KitManager.get().getKit(kitId);
+                if (kit != null && args[3].equalsIgnoreCase("remove")) {
+                    return kit.getBreakableBlocks().stream()
+                            .map(Material::name)
+                            .toList();
+                }
+                if (args[3].equalsIgnoreCase("add")) {
+                    Material[] materials = Material.values();
+                    List<String> result = new ArrayList<>();
+                    for (Material material : materials) {
+                        result.add(material.name());
+                    }
+                    return result;
                 }
             }
         }

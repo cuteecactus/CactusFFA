@@ -48,6 +48,13 @@ public class KitManager {
                 }
             }
 
+            if (config.contains(path + "breakable-blocks")) {
+                for (String block : config.getStringList(path + "breakable-blocks")) {
+                    Material mat = Material.matchMaterial(block);
+                    if (mat != null) kit.addBreakableBlock(mat);
+                }
+            }
+
             Object raw = config.get(path + "content");
             ItemStack[] content = null;
             if (raw instanceof ItemStack[]) {
@@ -195,6 +202,38 @@ public class KitManager {
         kits.put(key, kit);
 
         return true;
+    }
+
+    public boolean addBreakableBlock(String id, Material material) {
+        String key = id.toLowerCase();
+        if (!kits.containsKey(key)) return false;
+
+        Kit kit = getKit(key);
+        kit.addBreakableBlock(material);
+
+        saveBreakableBlocks(key, kit);
+        return true;
+    }
+
+    public boolean removeBreakableBlock(String id, Material material) {
+        String key = id.toLowerCase();
+        if (!kits.containsKey(key)) return false;
+
+        Kit kit = getKit(key);
+        kit.removeBreakableBlock(material);
+
+        saveBreakableBlocks(key, kit);
+        return true;
+    }
+
+    private void saveBreakableBlocks(String key, Kit kit) {
+        String path = "kits." + key + ".";
+        List<String> blockNames = kit.getBreakableBlocks().stream()
+                .map(Material::name)
+                .toList();
+        config.set(path + "breakable-blocks", blockNames);
+        KitsConfig.get().save(config);
+        kits.put(key, kit);
     }
 
 }

@@ -16,7 +16,7 @@
 - [x] Admin Kit editor gui
 - [x] Kit rules [Lobby on death, Saturation, Hunger, Block Placement, Block Breaking ...]
 - [x] Kit icon command
-- [ ] Kit breakable blocks
+- [x] Kit breakable blocks
 - [x] Kit rename command
 
 **Arena System**
