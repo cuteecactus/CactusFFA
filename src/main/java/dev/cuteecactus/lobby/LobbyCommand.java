@@ -6,9 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import dev.cuteecactus.profile.Profile;
-import dev.cuteecactus.profile.ProfileManager;
-import dev.cuteecactus.profile.ProfileState;
 import dev.cuteecactus.utils.ColorUtil;
 
 public class LobbyCommand implements CommandExecutor {
@@ -20,15 +17,8 @@ public class LobbyCommand implements CommandExecutor {
             sender.sendMessage(ColorUtil.color("&cOnly players can use this command"));
             return true;
         }
-
-        Profile profile = ProfileManager.get().getProfile(player.getUniqueId());
-        if (profile == null) return true;
         
-        if (profile.getProfileState() == ProfileState.IN_FFA) {
-            // TODO: leave ffa
-        }
-        
-        player.teleport(LobbyManager.get().getLobby());
+        LobbyManager.get().load(player);
         return true;
     }
     

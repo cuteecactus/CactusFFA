@@ -1,3 +1,8 @@
 lobby: null
 
 lobby-command: true
+
+# Run any command when players leave the ffa. Eg. give hotbar items
+# DO NOT include `/` in command
+# Placeholders: {player} - player name
+ffa-leave-commands: []
