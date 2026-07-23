@@ -153,7 +153,7 @@ public class KitEditorGui {
         
         boolean lobbyOnDeathRule = kit.getRule("death-lobby");
         GuiItem lobbyOnDeathItem = ItemBuilder.from(Material.ENDER_PEARL)
-                .name(ColorUtil.color(placeBlockRule ? "&aLobby On Death":"&cLobby On Death"))
+                .name(ColorUtil.color(lobbyOnDeathRule ? "&aLobby On Death":"&cLobby On Death"))
                 .lore(
                         List.of("&7Teleport players to lobby on death")
                                 .stream()
