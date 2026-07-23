@@ -5,8 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import dev.cuteecactus.ffa.FFAManager;
 import dev.cuteecactus.kits.Kit;
-import dev.cuteecactus.lobby.LobbyManager;
 import dev.cuteecactus.profile.Profile;
 import dev.cuteecactus.profile.ProfileManager;
 
@@ -27,7 +27,7 @@ public class DeathListener implements Listener {
         }
 
         if (kit.getRule("death-lobby") == true) {
-            LobbyManager.get().load(player);
+            FFAManager.get().leaveFFA(player);
         } else {
             // TODO: Respawn
         }

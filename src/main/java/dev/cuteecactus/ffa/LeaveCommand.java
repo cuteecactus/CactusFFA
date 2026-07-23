@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import dev.cuteecactus.config.MessageConfig;
-import dev.cuteecactus.lobby.LobbyManager;
 import dev.cuteecactus.profile.Profile;
 import dev.cuteecactus.profile.ProfileManager;
 import dev.cuteecactus.profile.ProfileState;
@@ -27,7 +26,7 @@ public class LeaveCommand implements CommandExecutor{
             return true;
         }
 
-        LobbyManager.get().load(player);
+        FFAManager.get().leaveFFA(player);
 
         return true;
     }
